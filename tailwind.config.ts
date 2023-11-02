@@ -23,7 +23,7 @@ const config: Config = {
             },
             screens: {
                 mobile: '360px',
-                tablet: '601px',
+                tablet: '849px',
                 laptop: '1024px',
                 desktop: '1280px',
             },
@@ -33,6 +33,7 @@ const config: Config = {
             },
             fontSize: {
                 xs: ['12px', '18px'],
+                '3xl': ['32px', '48px'],
             },
         },
     },

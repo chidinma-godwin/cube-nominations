@@ -5,7 +5,7 @@ import { HiPlus } from 'react-icons/hi';
 
 const Header = () => {
     return (
-        <header className='bg-black'>
+        <header className='bg-black tablet:mb-12'>
             <nav
                 className='flex items-center justify-between p-4'
                 aria-label='Nominations'

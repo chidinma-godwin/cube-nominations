@@ -29,7 +29,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         >
             <body className={poppins.className}>
                 <Header />
-                <main className='flex grow'>{children}</main>
+                <main className='flex grow flex-col items-center max-w-screen-tablet mx-auto'>
+                    {children}
+                </main>
                 <Footer />
             </body>
         </html>
