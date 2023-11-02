@@ -21,6 +21,19 @@ const config: Config = {
                 success: '#00ED71',
                 error: '#F40256',
             },
+            screens: {
+                mobile: '360px',
+                tablet: '601px',
+                laptop: '1024px',
+                desktop: '1280px',
+            },
+            fontFamily: {
+                poppins: ['var(--font-poppins)'],
+                anonymous: ['var(--font-anonymous-pro)'],
+            },
+            fontSize: {
+                xs: ['12px', '18px'],
+            },
         },
     },
     plugins: [],
