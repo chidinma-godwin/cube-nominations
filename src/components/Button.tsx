@@ -1,13 +1,10 @@
-import { ButtonHTMLAttributes } from 'react';
+import Link, { LinkProps } from 'next/link';
 import clsx from 'clsx';
 
-interface ButtonProps
-    extends React.DetailedHTMLProps<
-        ButtonHTMLAttributes<HTMLButtonElement>,
-        HTMLButtonElement
-    > {
+type ButtonProps = {
     variant?: ButtonVariant;
-}
+} & LinkProps &
+    Omit<React.HTMLProps<HTMLAnchorElement>, 'ref'>;
 
 export enum ButtonVariant {
     primary = 'primary',
@@ -26,7 +23,7 @@ const getClassNameForButtonVariant = (buttonVariant: ButtonVariant) => {
 const Button = (props: ButtonProps) => {
     const { className, variant, ...otherProps } = props;
     return (
-        <button
+        <Link
             className={clsx(
                 'inline-flex items-center justify-center text-sm leading-6',
                 getClassNameForButtonVariant(variant ?? ButtonVariant.primary),
@@ -35,13 +32,12 @@ const Button = (props: ButtonProps) => {
             {...otherProps}
         >
             {props.children}
-        </button>
+        </Link>
     );
 };
 
 Button.defaultProps = {
     variant: ButtonVariant.primary,
-    type: 'button',
 };
 
 export default Button;
