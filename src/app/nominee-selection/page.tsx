@@ -1,8 +1,21 @@
+'use client';
+
+import { useContext } from 'react';
+import Image from 'next/image';
 import Button, { ButtonVariant } from '@/components/Button';
 import ProgressBar from '@/components/ProgressBar';
-import Image from 'next/image';
+import ActionArea from '@/components/ActionArea';
+import { ModalContext } from '@/components/Contexts';
 
 const NomineeSelection = () => {
+    const { setIsModalOpen, setNextRouteFromModal } = useContext(ModalContext);
+
+    const openModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault();
+        setIsModalOpen(true);
+        setNextRouteFromModal('/');
+    };
+
     return (
         <>
             <div>
@@ -36,24 +49,24 @@ const NomineeSelection = () => {
                         id='nominees'
                         className='border border-gray text-black px-1.5 py-3 w-[55%] font-anonymous mb-10'
                     >
-                        <option selected>Select Option</option>
+                        <option>Select Option</option>
                     </select>
-                    <div className='flex justify-around fixed bottom-0 left-0 right-0 w-full bg-white shadow-[0px_2px_10px_0px_#1A1A193D] tablet:relative tablet:shadow-none tablet:justify-between py-5'>
+                    <ActionArea className='justify-around tablet:justify-between tablet:shadow-none'>
                         <Button
-                            href='/'
+                            href='#'
                             variant={ButtonVariant.secondary}
                             className='w-[104px] h-[50px] border-2'
+                            onClick={openModal}
                         >
                             Back
                         </Button>
                         <Button
-                            href='/'
+                            href='#'
                             className='w-[223px] h-[50px] border-2'
-                            isDisabled
                         >
                             Next
                         </Button>
-                    </div>
+                    </ActionArea>
                 </form>
             </div>
         </>

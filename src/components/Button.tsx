@@ -51,9 +51,4 @@ const Button = (props: ButtonProps) => {
     );
 };
 
-Button.defaultProps = {
-    variant: ButtonVariant.primary,
-    isDisabled: false,
-};
-
 export default Button;
