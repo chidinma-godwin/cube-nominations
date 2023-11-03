@@ -33,6 +33,7 @@ const config: Config = {
             },
             fontSize: {
                 xs: ['12px', '18px'],
+                '2xl': ['24px', '38px'],
                 '3xl': ['32px', '48px'],
             },
         },
