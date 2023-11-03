@@ -1,3 +1,4 @@
+import ActionArea from '@/components/ActionArea';
 import Button from '@/components/Button';
 import Image from 'next/image';
 
@@ -21,14 +22,14 @@ const Home = () => {
                     cube of the month &#128081;&#11088;. Please nominate who you
                     think deserves this months title.
                 </div>
-                <div className='fixed bottom-0 left-0 right-0 w-full bg-white flex justify-center shadow-[0px_2px_10px_0px_#1A1A193D] tablet:relative tablet:shadow-none'>
+                <ActionArea className='justify-center tablet:shadow-none'>
                     <Button
                         href='/nominee-selection'
                         className='font-bold m-5 w-full h-[50px] tablet:w-[327px]'
                     >
                         GET STARTED
                     </Button>
-                </div>
+                </ActionArea>
             </div>
         </>
     );
