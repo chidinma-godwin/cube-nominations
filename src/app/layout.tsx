@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
 import { Poppins, Anonymous_Pro } from 'next/font/google';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import './globals.css';
+import RootComponent from '@/components/RootComponent';
 
 const poppins = Poppins({
     subsets: ['latin'],
-    weight: ['200', '300', '400', '600', '700'],
+    weight: ['300', '400', '600', '700'],
     variable: '--font-poppins',
 });
 
@@ -28,11 +27,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             className={`${poppins.variable} ${anonymousPro.variable}`}
         >
             <body className={poppins.className}>
-                <Header />
-                <main className='flex grow flex-col items-center max-w-screen-tablet mx-auto bg-white'>
-                    {children}
-                </main>
-                <Footer />
+                <RootComponent>{children}</RootComponent>
             </body>
         </html>
     );
