@@ -14,10 +14,10 @@ import clsx from 'clsx';
 import Button, { ButtonVariant } from '@/components/Button';
 import ActionArea from '@/components/ActionArea';
 import { ModalContext } from '@/components/Contexts';
-import FirstStep from './FirstStep';
-import SecondStep from './SecondStep';
-import ThirdStep from './ThirdStep';
-import FinalStep from './FinalStep';
+import SelectionStep from './SelectionStep';
+import ReasonStep from './ReasonStep';
+import ProcessFeedbackStep from './ProcessFeedbackStep';
+import OverviewStep from './OverviewStep';
 import { FormInputs, formSchema } from './type';
 
 const CurrentStepComponent = (props: {
@@ -32,14 +32,14 @@ const CurrentStepComponent = (props: {
     switch (step) {
         case 0:
             return (
-                <FirstStep
+                <SelectionStep
                     register={register}
                     errMsg={errors.nomineeId?.message ?? null}
                 />
             );
         case 1:
             return (
-                <SecondStep
+                <ReasonStep
                     register={register}
                     errMsg={errors.reason?.message ?? null}
                     nomineeName={props.nomineeName}
@@ -47,16 +47,16 @@ const CurrentStepComponent = (props: {
             );
         case 2:
             return (
-                <ThirdStep
+                <ProcessFeedbackStep
                     register={register}
                     errMsg={errors.process?.message ?? null}
                 />
             );
         case 3:
-            return <FinalStep errors={errors} setStep={setStep} />;
+            return <OverviewStep errors={errors} setStep={setStep} />;
         default:
             return (
-                <FirstStep
+                <SelectionStep
                     register={register}
                     errMsg={errors.nomineeId?.message ?? null}
                 />

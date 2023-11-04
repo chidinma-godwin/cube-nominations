@@ -25,7 +25,7 @@ const Item = (props: OverviewItemProps) => (
     </div>
 );
 
-const FinalStep = (props: {
+const OverviewStep = (props: {
     errors: FieldErrors<FormInputs>;
     setStep: Dispatch<SetStateAction<number>>;
 }) => {
@@ -88,4 +88,4 @@ const FinalStep = (props: {
     );
 };
 
-export default FinalStep;
+export default OverviewStep;

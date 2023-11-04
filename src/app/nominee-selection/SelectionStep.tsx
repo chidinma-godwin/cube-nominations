@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import { UseFormRegister } from 'react-hook-form';
+import { PiCaretDownBold } from 'react-icons/pi';
 import ProgressBar from '@/components/ProgressBar';
 import { FormInputs } from './type';
 
-const FirstStepInput = (props: {
+const SelectionStep = (props: {
     register: UseFormRegister<FormInputs>;
     errMsg: string | null;
 }) => {
@@ -32,14 +33,22 @@ const FirstStepInput = (props: {
                 <label htmlFor='nominees' className='block mb-2 font-bold my-4'>
                     Cube&apos;s name
                 </label>
-                <select
-                    id='nominees'
-                    className='border border-gray text-black px-1.5 py-3 w-[55%] font-anonymous mb-10'
-                    {...props.register('nomineeId')}
-                >
-                    {/* TODO: Fetch the nominees list and display them here */}
-                    <option>Select Option</option>
-                </select>
+                <div id='nominees' className='relative w-[55%]'>
+                    <button type='button'>
+                        <PiCaretDownBold className='absolute right-4 top-[15%] w-6 h-6 text-pink' />
+                    </button>
+                    <select
+                        className='border border-gray text-black px-1.5 py-3 w-full font-anonymous mb-10 appearance-none'
+                        {...props.register('nomineeId')}
+                    >
+                        {/* TODO: Fetch the nominees list and display them here */}
+                        <option>Select Option</option>
+                        <option>Select Option</option>
+                        <option>Select Option</option>
+                        <option>Select Option</option>
+                        <option>Select Option</option>
+                    </select>
+                </div>
                 {props.errMsg ? (
                     <p className='text-error font-anonymous'>{props.errMsg}</p>
                 ) : null}
@@ -48,4 +57,4 @@ const FirstStepInput = (props: {
     );
 };
 
-export default FirstStepInput;
+export default SelectionStep;

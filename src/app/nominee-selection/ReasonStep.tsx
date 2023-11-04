@@ -3,7 +3,7 @@ import { UseFormRegister } from 'react-hook-form';
 import ProgressBar from '@/components/ProgressBar';
 import { FormInputs } from './type';
 
-const SecondStepInput = (props: {
+const ReasonStep = (props: {
     register: UseFormRegister<FormInputs>;
     errMsg: string | null;
     nomineeName: string | null;
@@ -53,4 +53,4 @@ const SecondStepInput = (props: {
     );
 };
 
-export default SecondStepInput;
+export default ReasonStep;
