@@ -13,6 +13,7 @@ const anonymousPro = Anonymous_Pro({
     subsets: ['latin'],
     weight: ['400', '700'],
     variable: '--font-anonymous-pro',
+    display: 'swap',
 });
 
 export const metadata: Metadata = {

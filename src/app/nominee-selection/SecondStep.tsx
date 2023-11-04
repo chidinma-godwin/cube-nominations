@@ -1,7 +1,13 @@
-import ProgressBar from '@/components/ProgressBar';
 import Image from 'next/image';
+import { UseFormRegister } from 'react-hook-form';
+import ProgressBar from '@/components/ProgressBar';
+import { FormInputs } from './type';
 
-const SecondStepInput = () => {
+const SecondStepInput = (props: {
+    register: UseFormRegister<FormInputs>;
+    errMsg: string | null;
+    nomineeName: string | null;
+}) => {
     // TODO: Get this from previous user input
     const nomineeName = 'Random';
 
@@ -22,7 +28,7 @@ const SecondStepInput = () => {
                     <>
                         I&apos;D LIKE TO NOMINATE
                         <span className='mx-2 uppercase text-pink'>
-                            {nomineeName}
+                            {props.nomineeName}
                         </span>
                         BECAUSE...
                     </>
@@ -35,10 +41,13 @@ const SecondStepInput = () => {
                     Reasoning
                 </label>
                 <textarea
-                    required
                     id='reason'
                     className='border border-gray text-black px-1.5 py-3 w-full font-anonymous mb-10'
+                    {...props.register('reason')}
                 />
+                {props.errMsg ? (
+                    <p className='text-error font-anonymous'>{props.errMsg}</p>
+                ) : null}
             </div>
         </>
     );

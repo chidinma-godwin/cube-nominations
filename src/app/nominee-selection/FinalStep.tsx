@@ -1,19 +1,23 @@
-import ProgressBar from '@/components/ProgressBar';
+import { FieldErrors } from 'react-hook-form';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RxPencil1 } from 'react-icons/rx';
+import ProgressBar from '@/components/ProgressBar';
+import { FormInputs } from './type';
+import { Dispatch, SetStateAction } from 'react';
 
 type OverviewItemProps = {
     question: string;
     answer: string;
-    url: string;
+    setStep: Dispatch<SetStateAction<number>>;
+    index: number;
 };
 
 const Item = (props: OverviewItemProps) => (
     <div className='bg-gray-light mb-2 p-10'>
         <div className='flex justify-between'>
             <h2 className='font-bold mb-3'>{props.question}</h2>
-            <Link href={props.url}>
+            <Link href='#' onClick={() => props.setStep(props.index)}>
                 <RxPencil1 className='h-6 w-6 text-black' />
             </Link>
         </div>
@@ -21,23 +25,23 @@ const Item = (props: OverviewItemProps) => (
     </div>
 );
 
-const FinalStep = () => {
+const FinalStep = (props: {
+    errors: FieldErrors<FormInputs>;
+    setStep: Dispatch<SetStateAction<number>>;
+}) => {
     // TODO: Get this dynamically
     const summary = [
         {
             question: "Cube's Name",
             answer: 'Some answer',
-            url: '/nominee-selection',
         },
         {
             question: 'Reasoning',
             answer: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam impedit accusamus cum ex ducimus assumenda!',
-            url: '/nomination-reason',
         },
         {
             question: 'Thoughts on Current Process',
             answer: 'Honest answer',
-            url: 'fairness-opinion',
         },
     ];
 
@@ -61,14 +65,24 @@ const FinalStep = () => {
                     Thank you for taking the time to nominate a fellow cube.
                     Please check your answers before submitting.
                 </p>
-                {summary.map(({ question, answer, url }) => (
+                {summary.map(({ question, answer }, index) => (
                     <Item
                         key={question}
                         question={question}
                         answer={answer}
-                        url={url}
+                        index={index}
+                        setStep={props.setStep}
                     />
                 ))}
+            </div>
+            <div className='px-6 tablet:px-12 text-error font-anonymous'>
+                {Object.keys(props.errors).length > 0
+                    ? Object.values(props.errors).map((error) => (
+                          <p key={error.message} className='mb-2'>
+                              {error.message}
+                          </p>
+                      ))
+                    : null}
             </div>
         </>
     );

@@ -1,7 +1,12 @@
-import ProgressBar from '@/components/ProgressBar';
 import Image from 'next/image';
+import { UseFormRegister } from 'react-hook-form';
+import ProgressBar from '@/components/ProgressBar';
+import { FormInputs } from './type';
 
-const ThirdFormStep = () => {
+const ThirdFormStep = (props: {
+    register: UseFormRegister<FormInputs>;
+    errMsg: string | null;
+}) => {
     return (
         <>
             <div>
@@ -27,7 +32,7 @@ const ThirdFormStep = () => {
                     htmlFor='fairnessRange'
                     className='block mb-2 font-bold my-4'
                 >
-                    Reasoning
+                    Process opinion
                 </label>
                 <input
                     type='range'
@@ -36,6 +41,7 @@ const ThirdFormStep = () => {
                     value='50'
                     id='fairnessRange'
                     className='w-full mb-10 hidden tablet:block'
+                    {...props.register('process')}
                 />
                 <div className='tablet:hidden'>
                     <div className='w-full flex justify-between border border-gray p-3 mb-4'>
@@ -84,6 +90,9 @@ const ThirdFormStep = () => {
                         />
                     </div>
                 </div>
+                {props.errMsg ? (
+                    <p className='text-error font-anonymous'>{props.errMsg}</p>
+                ) : null}
             </div>
         </>
     );

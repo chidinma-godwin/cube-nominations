@@ -1,6 +1,16 @@
 'use client';
 
-import { useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import {
+    useForm,
+    SubmitHandler,
+    UseFormRegister,
+    FieldErrors,
+} from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { PiSpinner } from 'react-icons/pi';
+import clsx from 'clsx';
 import Button, { ButtonVariant } from '@/components/Button';
 import ActionArea from '@/components/ActionArea';
 import { ModalContext } from '@/components/Contexts';
@@ -8,28 +18,62 @@ import FirstStep from './FirstStep';
 import SecondStep from './SecondStep';
 import ThirdStep from './ThirdStep';
 import FinalStep from './FinalStep';
-import clsx from 'clsx';
-import { useRouter } from 'next/navigation';
+import { FormInputs, formSchema } from './type';
 
-const CurrentInput = (props: { step: number }) => {
-    switch (props.step) {
+const CurrentStepComponent = (props: {
+    step: number;
+    register: UseFormRegister<FormInputs>;
+    errors: FieldErrors<FormInputs>;
+    setStep: Dispatch<SetStateAction<number>>;
+    nomineeName: string | null;
+}) => {
+    const { step, register, errors, setStep } = props;
+
+    switch (step) {
         case 0:
-            return <FirstStep />;
+            return (
+                <FirstStep
+                    register={register}
+                    errMsg={errors.nomineeId?.message ?? null}
+                />
+            );
         case 1:
-            return <SecondStep />;
+            return (
+                <SecondStep
+                    register={register}
+                    errMsg={errors.reason?.message ?? null}
+                    nomineeName={props.nomineeName}
+                />
+            );
         case 2:
-            return <ThirdStep />;
+            return (
+                <ThirdStep
+                    register={register}
+                    errMsg={errors.process?.message ?? null}
+                />
+            );
         case 3:
-            return <FinalStep />;
+            return <FinalStep errors={errors} setStep={setStep} />;
         default:
-            return <FirstStep />;
+            return (
+                <FirstStep
+                    register={register}
+                    errMsg={errors.nomineeId?.message ?? null}
+                />
+            );
     }
 };
 
 const NomineeSelection = () => {
     const [step, setStep] = useState(0);
+    const [nomineeName, setNomineeName] = useState<string | null>(null);
     const { setIsModalOpen, setNextRouteFromModal } = useContext(ModalContext);
     const router = useRouter();
+    const {
+        register,
+        handleSubmit,
+        formState: { isSubmitting, errors },
+    } = useForm<FormInputs>({ resolver: yupResolver(formSchema) });
 
     const openModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault();
@@ -39,7 +83,11 @@ const NomineeSelection = () => {
 
     const isLastStep = step === 3;
 
-    const handleSubmit = () => {};
+    const submitNomination: SubmitHandler<FormInputs> = (data) => {
+        // TODO: Set the nominee name from the fetched data
+        setNomineeName('Some Name');
+        router.push('/nomination-submitted');
+    };
 
     const goToPrevStep = (
         e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
@@ -59,16 +107,23 @@ const NomineeSelection = () => {
     ) => {
         e.preventDefault();
         if (isLastStep) {
-            handleSubmit();
-            router.push('/nomination-submitted');
+            handleSubmit(submitNomination)();
+            // router.push('/nomination-submitted');
+        } else {
+            setStep((prevStep) => prevStep + 1);
         }
-        setStep((prevStep) => (prevStep < 3 ? prevStep + 1 : 0));
     };
 
     return (
         <div className='max-w-screen-tablet bg-white'>
             <form>
-                <CurrentInput step={step} />
+                <CurrentStepComponent
+                    step={step}
+                    register={register}
+                    errors={errors}
+                    setStep={setStep}
+                    nomineeName={nomineeName}
+                />
                 <ActionArea
                     className={clsx(
                         'justify-around tablet:shadow-none px-6 tablet:px-12',
@@ -92,8 +147,20 @@ const NomineeSelection = () => {
                         href='#'
                         className='w-[223px] h-[50px] border-2'
                         onClick={goToNextStep}
+                        isDisabled={
+                            isLastStep &&
+                            (isSubmitting || Object.keys(errors).length > 0)
+                        }
                     >
-                        {isLastStep ? 'SUBMIT' : 'NEXT'}
+                        {isLastStep ? (
+                            isSubmitting ? (
+                                <PiSpinner className='h-6 w-6 text-black' />
+                            ) : (
+                                'SUBMIT'
+                            )
+                        ) : (
+                            'NEXT'
+                        )}
                     </Button>
                 </ActionArea>
             </form>
