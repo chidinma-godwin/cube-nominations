@@ -1,14 +1,35 @@
 'use client';
 
-import { useContext } from 'react';
-import Image from 'next/image';
+import { useContext, useState } from 'react';
 import Button, { ButtonVariant } from '@/components/Button';
-import ProgressBar from '@/components/ProgressBar';
 import ActionArea from '@/components/ActionArea';
 import { ModalContext } from '@/components/Contexts';
+import FirstStep from './FirstStep';
+import SecondStep from './SecondStep';
+import ThirdStep from './ThirdStep';
+import FinalStep from './FinalStep';
+import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
+
+const CurrentInput = (props: { step: number }) => {
+    switch (props.step) {
+        case 0:
+            return <FirstStep />;
+        case 1:
+            return <SecondStep />;
+        case 2:
+            return <ThirdStep />;
+        case 3:
+            return <FinalStep />;
+        default:
+            return <FirstStep />;
+    }
+};
 
 const NomineeSelection = () => {
+    const [step, setStep] = useState(0);
     const { setIsModalOpen, setNextRouteFromModal } = useContext(ModalContext);
+    const router = useRouter();
 
     const openModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault();
@@ -16,60 +37,67 @@ const NomineeSelection = () => {
         setNextRouteFromModal('/');
     };
 
+    const isLastStep = step === 3;
+
+    const handleSubmit = () => {};
+
+    const goToPrevStep = (
+        e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+        setStep((prevStep) => {
+            if (prevStep !== 0) {
+                return prevStep - 1;
+            }
+            openModal(e);
+            return 0;
+        });
+    };
+
+    const goToNextStep = (
+        e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+        if (isLastStep) {
+            handleSubmit();
+            router.push('/nomination-submitted');
+        }
+        setStep((prevStep) => (prevStep < 3 ? prevStep + 1 : 0));
+    };
+
     return (
-        <>
-            <div>
-                <ProgressBar percentage={80} />
-                <Image
-                    className='tablet:px-12'
-                    src='/nominee-selection.svg'
-                    width={848}
-                    height={402}
-                    alt='Two colleagues discussing'
-                />
-            </div>
-            <div className='p-6 tablet:p-12'>
-                <h2 className='font-bold text-2xl mt-6 mb-2'>
-                    I&apos;D Like To Nominate...
-                </h2>
-                <span className='flex font-anonymous tablet:w-4/5'>
-                    Please select a cube who you feel has done something
-                    honourable this month or just all round has a great work
-                    ethic.
-                </span>
-                <form>
-                    <label
-                        htmlFor='nominees'
-                        className='block mb-2 font-bold my-4'
+        <div className='max-w-screen-tablet bg-white'>
+            <form>
+                <CurrentInput step={step} />
+                <ActionArea
+                    className={clsx(
+                        'justify-around tablet:shadow-none px-6 tablet:px-12',
+                        isLastStep
+                            ? ' tablet:justify-center tablet:items-center'
+                            : 'tablet:justify-between'
+                    )}
+                >
+                    <Button
+                        href='#'
+                        variant={ButtonVariant.secondary}
+                        className={clsx(
+                            'w-[104px] h-[50px] border-2',
+                            isLastStep && 'tablet:hidden'
+                        )}
+                        onClick={goToPrevStep}
                     >
-                        Cube&apos;s name
-                    </label>
-                    <select
-                        required
-                        id='nominees'
-                        className='border border-gray text-black px-1.5 py-3 w-[55%] font-anonymous mb-10'
+                        BACK
+                    </Button>
+                    <Button
+                        href='#'
+                        className='w-[223px] h-[50px] border-2'
+                        onClick={goToNextStep}
                     >
-                        <option>Select Option</option>
-                    </select>
-                    <ActionArea className='justify-around tablet:justify-between tablet:shadow-none'>
-                        <Button
-                            href='#'
-                            variant={ButtonVariant.secondary}
-                            className='w-[104px] h-[50px] border-2'
-                            onClick={openModal}
-                        >
-                            Back
-                        </Button>
-                        <Button
-                            href='#'
-                            className='w-[223px] h-[50px] border-2'
-                        >
-                            Next
-                        </Button>
-                    </ActionArea>
-                </form>
-            </div>
-        </>
+                        {isLastStep ? 'SUBMIT' : 'NEXT'}
+                    </Button>
+                </ActionArea>
+            </form>
+        </div>
     );
 };
 

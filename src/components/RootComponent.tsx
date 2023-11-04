@@ -24,7 +24,7 @@ const RootComponent = ({ children }: { children: React.ReactNode }) => {
             }}
         >
             <Header />
-            <main className='flex grow flex-col items-center max-w-screen-tablet mx-auto bg-white'>
+            <main className='flex grow flex-col items-center mx-auto'>
                 {children}
             </main>
             <Footer />

@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 const Home = () => {
     return (
-        <>
+        <div className='max-w-screen-tablet bg-white'>
             <Image
                 className=''
                 width={848}
@@ -31,7 +31,7 @@ const Home = () => {
                     </Button>
                 </ActionArea>
             </div>
-        </>
+        </div>
     );
 };
 
