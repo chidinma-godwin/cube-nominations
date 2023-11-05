@@ -20,11 +20,9 @@ const Header = () => {
         e.preventDefault();
         if (pathname === '/nominee-selection') {
             setIsModalOpen(true);
-            // TODO: Change to the nominations page
-            setNextRouteFromModal('/');
+            setNextRouteFromModal('/view-nominations');
         } else {
-            // TODO: Change to the nominations page
-            router.push('/');
+            router.push('/view-nominations');
         }
     };
 

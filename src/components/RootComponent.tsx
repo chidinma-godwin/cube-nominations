@@ -6,6 +6,8 @@ import { ModalContext } from './Contexts';
 import Footer from './Footer';
 import Header from './Header';
 import Modal from './Modal';
+import ActionArea from './ActionArea';
+import Button, { ButtonVariant } from './Button';
 
 const RootComponent = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
@@ -13,6 +15,11 @@ const RootComponent = ({ children }: { children: React.ReactNode }) => {
     const [nextRouteFromModal, setNextRouteFromModal] = useState<string | null>(
         null
     );
+
+    const closeModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault();
+        setIsModalOpen(false);
+    };
 
     return (
         <ModalContext.Provider
@@ -29,14 +36,37 @@ const RootComponent = ({ children }: { children: React.ReactNode }) => {
             </main>
             <Footer />
             {isModalOpen ? (
-                <Modal
-                    setIsModalOpen={setIsModalOpen}
-                    handleLeavePage={() => {
-                        if (nextRouteFromModal) {
-                            router.push(nextRouteFromModal);
-                        }
-                    }}
-                />
+                <Modal>
+                    <h2 className='text-lg font-bold leading-[48px] mb-2 px-6'>
+                        ARE YOU SURE?
+                    </h2>
+                    <span className='font-anonymous leading-[30px] mb-12 px-6'>
+                        If you leave this page, you will lose any progress made.
+                    </span>
+                    <ActionArea className='flex-col shadow-[0px_2px_10px_0px_#1A1A193D] px-6'>
+                        <Button
+                            href='#'
+                            variant={ButtonVariant.secondary}
+                            className='w-full mb-4 py-2'
+                            onClick={(e) => {
+                                closeModal(e);
+                                if (nextRouteFromModal) {
+                                    router.push(nextRouteFromModal);
+                                }
+                            }}
+                        >
+                            Yes, Leave Page
+                        </Button>
+                        <Button
+                            href='#'
+                            variant={ButtonVariant.secondary}
+                            onClick={closeModal}
+                            className='w-full py-2'
+                        >
+                            Cancel
+                        </Button>
+                    </ActionArea>
+                </Modal>
             ) : null}
         </ModalContext.Provider>
     );
