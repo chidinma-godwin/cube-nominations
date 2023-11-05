@@ -1,6 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction } from 'react';
-import ActionArea from './ActionArea';
-import Button, { ButtonVariant } from './Button';
+import { ReactNode } from 'react';
 
 type ModalProps = {
     children: ReactNode;
