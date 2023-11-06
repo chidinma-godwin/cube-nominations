@@ -1,4 +1,6 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+'use client';
+
+import { Dispatch, SetStateAction } from 'react';
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
 import SelectionStep from './SelectionStep';
 import ReasonStep from './ReasonStep';

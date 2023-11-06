@@ -48,7 +48,7 @@ export const fetchLogin = (
 /**
  * Login an existing user
  */
-export const useCubeAcademyLogin = (
+export const useLogin = (
     options?: Omit<
         reactQuery.UseMutationOptions<
             Responses.AuthToken,
@@ -113,7 +113,7 @@ export const fetchRegister = (
 /**
  * Register a new user
  */
-export const useCubeAcademyRegister = (
+export const useRegister = (
     options?: Omit<
         reactQuery.UseMutationOptions<
             Responses.AuthToken,
@@ -230,7 +230,7 @@ export const fetchCreateNomination = (
 /**
  * Create a new nomination
  */
-export const useCubeAcademyCreateNomination = (
+export const useCreateNomination = (
     options?: Omit<
         reactQuery.UseMutationOptions<
             Responses.Nomination,
@@ -423,7 +423,7 @@ export const fetchUpdateNomination = (
 /**
  * Update a specific existing nominiation
  */
-export const useCubeAcademyUpdateNomination = (
+export const useUpdateNomination = (
     options?: Omit<
         reactQuery.UseMutationOptions<
             Responses.Nomination,
@@ -482,7 +482,7 @@ export const fetchDeleteNomination = (
 /**
  * Delete a specific existing nomination
  */
-export const useCubeAcademyDeleteNomination = (
+export const useDeleteNomination = (
     options?: Omit<
         reactQuery.UseMutationOptions<
             Responses.Deletion,

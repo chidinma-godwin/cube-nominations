@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { FaUserCircle } from 'react-icons/fa';
@@ -10,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import ActionArea from '@/components/ActionArea';
 import Button from '@/components/Button';
 import useToken from '@/hooks/useToken';
-import { fetchLogin } from '@/data/nominationComponents';
+import { useLogin } from '@/data/nominationComponents';
 import { LoginInputs, loginSchema } from './type';
 
 const Login = () => {
@@ -25,6 +26,8 @@ const Login = () => {
 
     const { setAuthToken } = useToken();
 
+    const { mutateAsync } = useLogin();
+
     const router = useRouter();
 
     const handleLogin = (
@@ -33,13 +36,13 @@ const Login = () => {
         e.preventDefault();
         handleSubmit(async (data) => {
             try {
-                const response = await fetchLogin({
+                const { data: loginData } = await mutateAsync({
                     body: {
                         email: data.email,
                         password: data.password,
                     },
                 });
-                const authToken = response.data?.authToken;
+                const authToken = loginData?.authToken;
 
                 if (authToken) {
                     setAuthToken(authToken);
@@ -47,9 +50,11 @@ const Login = () => {
                     router.push('/');
                 }
             } catch (err: any) {
-                setError('root.loginError', {
-                    message: err.message,
-                });
+                if (err) {
+                    setError('root.loginError', {
+                        message: err.message,
+                    });
+                }
             }
         })();
     };

@@ -10,7 +10,7 @@ import Button, { ButtonVariant } from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import Modal from '@/components/Modal';
 import {
-    fetchDeleteNomination,
+    useDeleteNomination,
     useGetAllNominations,
     useRetrieveNomineeList,
 } from '@/data/nominationComponents';
@@ -74,7 +74,7 @@ const ViewNominations = () => {
         isFetching,
         error,
         isFetched,
-    } = useGetAllNominations({});
+    } = useGetAllNominations({}, { refetchOnMount: true });
 
     const {
         data: nomineesData,
@@ -83,8 +83,12 @@ const ViewNominations = () => {
         error: nomineeListErr,
     } = useRetrieveNomineeList(
         {},
-        { enabled: nominations?.data != null && nominations.data.length > 0 }
+        {
+            enabled: nominations?.data != null && nominations.data.length > 0,
+        }
     );
+
+    const { mutateAsync } = useDeleteNomination();
 
     const { authToken } = useToken();
 
@@ -165,12 +169,9 @@ const ViewNominations = () => {
     const handleDelete = async () => {
         try {
             if (nominationToDeleteId) {
-                await fetchDeleteNomination({
+                await mutateAsync({
                     pathParams: {
                         nominationId: nominationToDeleteId,
-                    },
-                    headers: {
-                        authorization: `Bearer ${authToken}`,
                     },
                 });
                 setIsModalOpen(false);
@@ -287,7 +288,16 @@ const ViewNominations = () => {
                                                 {reason}
                                             </td>
                                             <td className='w-[5%]  p-4'>
-                                                {process}
+                                                {process
+                                                    .split('_')
+                                                    .map(
+                                                        (word) =>
+                                                            word
+                                                                .charAt(0)
+                                                                .toUpperCase() +
+                                                            word.substring(1)
+                                                    )
+                                                    .join(' ')}
                                             </td>
                                             <td className='w-[5%]  p-4'>
                                                 {/* This is to prevent showing the icon when the filtered data is empty */}

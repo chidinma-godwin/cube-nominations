@@ -10,8 +10,9 @@ import { useRouter } from 'next/navigation';
 import ActionArea from '@/components/ActionArea';
 import Button from '@/components/Button';
 import { SignUpInputs, signUpSchema } from './type';
-import { fetchRegister } from '@/data/nominationComponents';
+import { useRegister } from '@/data/nominationComponents';
 import useToken from '@/hooks/useToken';
+import { useEffect } from 'react';
 
 const SignUp = () => {
     const {
@@ -26,6 +27,7 @@ const SignUp = () => {
     const { setAuthToken } = useToken();
 
     const router = useRouter();
+    const { mutateAsync } = useRegister();
 
     const handleSignup = (
         e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
@@ -33,14 +35,14 @@ const SignUp = () => {
         e.preventDefault();
         handleSubmit(async (data) => {
             try {
-                const response = await fetchRegister({
+                const { data: signupData } = await mutateAsync({
                     body: {
                         name: data.name,
                         email: data.email,
                         password: data.password,
                     },
                 });
-                const authToken = response.data?.authToken;
+                const authToken = signupData?.authToken;
 
                 if (authToken) {
                     setAuthToken(authToken);
@@ -48,9 +50,11 @@ const SignUp = () => {
                     router.push('/');
                 }
             } catch (err: any) {
-                setError('root.signupError', {
-                    message: err.message,
-                });
+                if (err) {
+                    setError('root.signupError', {
+                        message: err.msg,
+                    });
+                }
             }
         })();
     };
@@ -126,7 +130,7 @@ const SignUp = () => {
                 />
                 <div className='px-6 tablet:px-12 text-error font-anonymous'>
                     {Object.keys(allErrors).length > 0
-                        ? Object.values(errors).map((error) => (
+                        ? Object.values(allErrors).map((error) => (
                               <p key={error.message} className='mb-2'>
                                   {error.message}
                               </p>
@@ -139,7 +143,9 @@ const SignUp = () => {
                         className='w-full mx-6 tablet:w-[223px] h-[50px] font-bold leading-6'
                         onClick={handleSignup}
                         isDisabled={
-                            Object.keys(errors).length > 0 || isSubmitting
+                            isSubmitting ||
+                            Object.keys(errors).length > 1 ||
+                            (Object.keys(errors).length === 1 && !errors.root)
                         }
                     >
                         {isSubmitting ? (

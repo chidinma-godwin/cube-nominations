@@ -12,9 +12,9 @@ import { ModalContext } from '@/components/Contexts';
 import { FormInputs, formSchema } from './type';
 import CurrentStep from './CurrentStep';
 import {
-    fetchCreateNomination,
-    fetchUpdateNomination,
+    useCreateNomination,
     useGetNominationById,
+    useUpdateNomination,
 } from '@/data/nominationComponents';
 import { getProcessFromString, getProcessString } from './utils';
 import useToken from '@/hooks/useToken';
@@ -43,6 +43,9 @@ const NomineeSelection = () => {
 
     const { nominee_id, process, reason } = nominationData?.data ?? {};
 
+    const { mutateAsync: createNominationAsync } = useCreateNomination();
+    const { mutateAsync: updataNominationAsync } = useUpdateNomination();
+
     useLayoutEffect(() => {
         if (!authToken) {
             router.push('/account/login');
@@ -70,12 +73,9 @@ const NomineeSelection = () => {
     const submitNomination: SubmitHandler<FormInputs> = async (data) => {
         const processString = getProcessString(Number(data.process));
         try {
-            const nominationId = nominationData?.data?.nomination_id;
+            const nominationId = searchParams.get('id');
             if (nominationId) {
-                await fetchUpdateNomination({
-                    headers: {
-                        authorization: `Bearer ${authToken}`,
-                    },
+                await updataNominationAsync({
                     pathParams: {
                         nominationId,
                     },
@@ -86,17 +86,15 @@ const NomineeSelection = () => {
                     },
                 });
             } else {
-                await fetchCreateNomination({
+                await createNominationAsync({
                     body: {
                         nominee_id: data.nomineeId,
                         reason: data.reason,
                         process: processString,
                     },
-                    headers: {
-                        authorization: `Bearer ${authToken}`,
-                    },
                 });
             }
+
             router.push('/nomination-submitted');
         } catch (error: any) {
             setError('root.createNominationErr', {

@@ -43,7 +43,10 @@ const OverviewStep = (props: {
         },
         {
             question: 'Thoughts on Current Process',
-            answer: getProcessString(Number(props.formData.process)),
+            answer: getProcessString(Number(props.formData.process))
+                .split('_')
+                .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+                .join(' '),
         },
     ];
 
