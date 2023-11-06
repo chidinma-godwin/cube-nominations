@@ -11,15 +11,7 @@ const SelectionStep = (props: {
     setNomineeName: Dispatch<SetStateAction<string | null>>;
     errMsg: string | null;
 }) => {
-    const {
-        data,
-        error: fetchErr,
-        isLoading,
-    } = useRetrieveNomineeList({
-        headers: {
-            Authorization: `Bearer 477|b46gNBw9ULXSgXLp8dL3UJLhG1Z3GAQzt7Dv8PsX6551090a`,
-        },
-    });
+    const { data, error: fetchErr, isLoading } = useRetrieveNomineeList({});
 
     const { onChange, ...restSelectProps } = props.register('nomineeId');
 

@@ -16,6 +16,7 @@ import {
 } from '@/data/nominationComponents';
 import { Nominations, Nominee } from '@/data/nominationResponses';
 import TableSkeleton from './TableSkeleton';
+import useToken from '@/hooks/useToken';
 
 type NominationType = {
     id: string;
@@ -71,17 +72,11 @@ const ViewNominations = () => {
         isFetching,
         error,
         isFetched,
-    } = useGetAllNominations({
-        headers: {
-            Authorization: `Bearer 477|b46gNBw9ULXSgXLp8dL3UJLhG1Z3GAQzt7Dv8PsX6551090a`,
-        },
-    });
+    } = useGetAllNominations({});
 
-    const { data: nomineesData } = useRetrieveNomineeList({
-        headers: {
-            Authorization: `Bearer 477|b46gNBw9ULXSgXLp8dL3UJLhG1Z3GAQzt7Dv8PsX6551090a`,
-        },
-    });
+    const { data: nomineesData } = useRetrieveNomineeList({});
+
+    const { authToken } = useToken();
 
     const data: NominationType[] = getFormattedData({
         nominations: nominations?.data,
@@ -159,7 +154,7 @@ const ViewNominations = () => {
                         nominationId: nominationToDeleteId,
                     },
                     headers: {
-                        Authorization: `Bearer 77|b46gNBw9ULXSgXLp8dL3UJLhG1Z3GAQzt7Dv8PsX6551090a`,
+                        authorization: `Bearer ${authToken}`,
                     },
                 });
                 setIsModalOpen(false);

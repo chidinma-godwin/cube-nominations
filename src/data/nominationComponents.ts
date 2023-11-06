@@ -97,7 +97,7 @@ export type CubeAcademyRegisterVariables = {
 /**
  * Register a new user
  */
-export const fetchCubeAcademyRegister = (
+export const fetchRegister = (
     variables: CubeAcademyRegisterVariables,
     signal?: AbortSignal
 ) =>
@@ -130,7 +130,7 @@ export const useCubeAcademyRegister = (
         CubeAcademyRegisterVariables
     >({
         mutationFn: (variables: CubeAcademyRegisterVariables) =>
-            fetchCubeAcademyRegister({ ...fetcherOptions, ...variables }),
+            fetchRegister({ ...fetcherOptions, ...variables }),
         ...options,
     });
 };

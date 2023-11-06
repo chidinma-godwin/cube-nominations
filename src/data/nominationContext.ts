@@ -1,12 +1,15 @@
 import type { QueryKey, UseQueryOptions } from '@tanstack/react-query';
 import { QueryOperation } from './nominationComponents';
+import useToken from '@/hooks/useToken';
 
 export type NominationContext = {
     fetcherOptions: {
         /**
          * Headers to inject in the fetcher
          */
-        headers?: {};
+        headers?: {
+            authorization?: string;
+        };
         /**
          * Query params to inject in the fetcher
          */
@@ -36,14 +39,22 @@ export function useNominationContext<
     TData = TQueryFnData,
     TQueryKey extends QueryKey = QueryKey
 >(
-    _queryOptions?: Omit<
+    queryOptions?: Omit<
         UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
         'queryKey' | 'queryFn'
     >
 ): NominationContext {
+    const { authToken } = useToken();
+
     return {
-        fetcherOptions: {},
-        queryOptions: {},
+        fetcherOptions: {
+            headers: {
+                authorization: authToken ? `Bearer ${authToken}` : undefined,
+            },
+        },
+        queryOptions: {
+            enabled: authToken !== null && (queryOptions?.enabled ?? true),
+        },
         queryKeyFn,
     };
 }

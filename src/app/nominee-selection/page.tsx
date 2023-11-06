@@ -13,10 +13,12 @@ import { FormInputs, formSchema } from './type';
 import CurrentStep from './CurrentStep';
 import { fetchCreateNomination } from '@/data/nominationComponents';
 import { getProcessString } from './utils';
+import useToken from '@/hooks/useToken';
 
 const NomineeSelection = () => {
     const [step, setStep] = useState(0);
     const { setIsModalOpen, setNextRouteFromModal } = useContext(ModalContext);
+    const { authToken } = useToken();
     const router = useRouter();
     const {
         register,
@@ -44,7 +46,7 @@ const NomineeSelection = () => {
                     process: processString,
                 },
                 headers: {
-                    Authorization: `Bearer 477|b46gNBw9ULXSgXLp8dL3UJLhG1Z3GAQzt7Dv8PsX6551090a`,
+                    authorization: `Bearer ${authToken}`,
                 },
             });
             router.push('/nomination-submitted');

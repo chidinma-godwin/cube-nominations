@@ -15,3 +15,15 @@ const initialModalState: ModalStateType = {
 };
 
 export const ModalContext = createContext(initialModalState);
+
+type AuthStateType = {
+    authToken: string | null;
+    setAuthToken: (authToken: string | null) => void;
+};
+
+export const initialAuthToken: AuthStateType = {
+    authToken: null,
+    setAuthToken: () => {},
+};
+
+export const AuthContext = createContext(initialAuthToken);
