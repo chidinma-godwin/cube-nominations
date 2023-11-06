@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -42,6 +42,12 @@ const NomineeSelection = () => {
     } = useForm<FormInputs>({ resolver: yupResolver(formSchema) });
 
     const { nominee_id, process, reason } = nominationData?.data ?? {};
+
+    useLayoutEffect(() => {
+        if (!authToken) {
+            router.push('/account/login');
+        }
+    }, [authToken, router]);
 
     useEffect(() => {
         if (nominee_id && process && reason) {

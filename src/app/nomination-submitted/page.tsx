@@ -1,8 +1,20 @@
+import { useLayoutEffect } from 'react';
 import ActionArea from '@/components/ActionArea';
 import Button, { ButtonVariant } from '@/components/Button';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import useToken from '@/hooks/useToken';
 
 const NominationSubmited = () => {
+    const router = useRouter();
+    const { authToken } = useToken();
+
+    useLayoutEffect(() => {
+        if (!authToken) {
+            router.push('/account/login');
+        }
+    }, [router, authToken]);
+
     return (
         <div className='max-w-screen-tablet bg-white'>
             <Image

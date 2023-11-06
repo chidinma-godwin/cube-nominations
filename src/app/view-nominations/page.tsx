@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import EmptyNominations from './EmptyNominations';
 import { HiOutlineTrash } from 'react-icons/hi';
 import { RxPencil1 } from 'react-icons/rx';
@@ -86,6 +86,12 @@ const ViewNominations = () => {
     });
 
     const [filteredData, setFilteredData] = useState<NominationType[]>(data);
+
+    useLayoutEffect(() => {
+        if (!authToken) {
+            router.push('/account/login');
+        }
+    }, [router, authToken]);
 
     useEffect(() => {
         if (isFetched) {
