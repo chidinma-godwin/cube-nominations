@@ -160,7 +160,7 @@ export const fetchCubeAcademyRetrieveNomineeList = (
 /**
  * Retrieve a complete list of all nominees
  */
-export const useCubeAcademyRetrieveNomineeList = <TData = Responses.Nominee>(
+export const useRetrieveNomineeList = <TData = Responses.Nominee>(
     variables: CubeAcademyRetrieveNomineeListVariables,
     options?: Omit<
         reactQuery.UseQueryOptions<
@@ -214,7 +214,7 @@ export type CubeAcademyCreateNominationVariables = {
 /**
  * Create a new nomination
  */
-export const fetchCubeAcademyCreateNomination = (
+export const fetchCreateNomination = (
     variables: CubeAcademyCreateNominationVariables,
     signal?: AbortSignal
 ) =>
@@ -247,7 +247,7 @@ export const useCubeAcademyCreateNomination = (
         CubeAcademyCreateNominationVariables
     >({
         mutationFn: (variables: CubeAcademyCreateNominationVariables) =>
-            fetchCubeAcademyCreateNomination({
+            fetchCreateNomination({
                 ...fetcherOptions,
                 ...variables,
             }),
@@ -279,7 +279,7 @@ export const fetchCubeAcademyGetAllNominations = (
 /**
  * Retrieves all nominations set by the user
  */
-export const useCubeAcademyGetAllNominations = <TData = Responses.Nominations>(
+export const useGetAllNominations = <TData = Responses.Nominations>(
     variables: CubeAcademyGetAllNominationsVariables,
     options?: Omit<
         reactQuery.UseQueryOptions<
@@ -464,7 +464,7 @@ export type CubeAcademyDeleteNominationVariables = {
 /**
  * Delete a specific existing nomination
  */
-export const fetchCubeAcademyDeleteNomination = (
+export const fetchDeleteNomination = (
     variables: CubeAcademyDeleteNominationVariables,
     signal?: AbortSignal
 ) =>
@@ -502,7 +502,7 @@ export const useCubeAcademyDeleteNomination = (
         CubeAcademyDeleteNominationVariables
     >({
         mutationFn: (variables: CubeAcademyDeleteNominationVariables) =>
-            fetchCubeAcademyDeleteNomination({
+            fetchDeleteNomination({
                 ...fetcherOptions,
                 ...variables,
             }),

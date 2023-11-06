@@ -13,12 +13,12 @@ export type Nominee = {
 
 export type Nominations = {
     data?: {
-        nomination_id?: string;
-        nominee_id?: string;
-        reason?: string;
-        process?: string;
-        date_submitted?: string;
-        closing_date?: string;
+        nomination_id: string;
+        nominee_id: string;
+        reason: string;
+        process: string;
+        date_submitted: string;
+        closing_date: string;
     }[];
 };
 
