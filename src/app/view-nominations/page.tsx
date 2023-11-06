@@ -76,7 +76,15 @@ const ViewNominations = () => {
         isFetched,
     } = useGetAllNominations({});
 
-    const { data: nomineesData } = useRetrieveNomineeList({});
+    const {
+        data: nomineesData,
+        isFetched: isNomineeListFetched,
+        isFetching: isFetchingNomineeList,
+        error: nomineeListErr,
+    } = useRetrieveNomineeList(
+        {},
+        { enabled: nominations?.data != null && nominations.data.length > 0 }
+    );
 
     const { authToken } = useToken();
 
@@ -94,13 +102,13 @@ const ViewNominations = () => {
     }, [router, authToken]);
 
     useEffect(() => {
-        if (isFetched) {
+        if (isFetched && isNomineeListFetched) {
             setFilteredData(data);
         }
 
         // We only want to run this when the data is initially fetched
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isFetched]);
+    }, [isFetched, isNomineeListFetched]);
 
     const filterCurrent = () => {
         setSortBy(SortByType.current);
@@ -191,15 +199,22 @@ const ViewNominations = () => {
         setIsModalOpen(false);
     };
 
-    if (isFetching) {
+    if (isFetching || isFetchingNomineeList) {
         return <TableSkeleton />;
     }
 
-    if (error) {
-        return (
-            <div className='w-full h-[300px] max-w-screen-tablet my-5 tablet:my-10 bg-white flex text-error items-center justify-center font-bold font-anonymous text-2xl'>
-                {error.payload}
-            </div>
+    const allErrors = [error, nomineeListErr].filter(Boolean);
+
+    if (allErrors.length > 0) {
+        return allErrors.map((err) =>
+            err != null ? (
+                <div
+                    key={err.payload}
+                    className='w-full h-[300px] max-w-screen-tablet my-5 tablet:my-10 bg-white flex text-error items-center justify-center font-bold font-anonymous text-2xl'
+                >
+                    {err.payload}
+                </div>
+            ) : null
         );
     }
 
