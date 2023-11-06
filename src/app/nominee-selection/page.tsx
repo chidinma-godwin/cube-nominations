@@ -39,6 +39,7 @@ const NomineeSelection = () => {
         getValues,
         setError,
         setValue,
+        reset,
     } = useForm<FormInputs>({ resolver: yupResolver(formSchema) });
 
     const { nominee_id, process, reason } = nominationData?.data ?? {};
@@ -52,23 +53,22 @@ const NomineeSelection = () => {
         }
     }, [authToken, router]);
 
+    const searchId = searchParams.get('id');
     useEffect(() => {
-        if (nominee_id && process && reason) {
+        if (searchId && nominee_id && process && reason) {
             const processValue: FormInputs['process'] =
                 getProcessFromString(process);
             setValue('nomineeId', nominee_id);
             setValue('process', processValue);
             setValue('reason', reason);
         }
-    }, [nominee_id, process, reason, setValue]);
+    }, [nominee_id, process, reason, setValue, searchId]);
 
     const openModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault();
         setIsModalOpen(true);
         setNextRouteFromModal('/');
     };
-
-    const isLastStep = step === 3;
 
     const submitNomination: SubmitHandler<FormInputs> = async (data) => {
         const processString = getProcessString(Number(data.process));
@@ -95,7 +95,7 @@ const NomineeSelection = () => {
                 });
             }
 
-            router.push('/nomination-submitted');
+            setStep(4);
         } catch (error: any) {
             setError('root.createNominationErr', {
                 message: error.message,
@@ -116,11 +116,13 @@ const NomineeSelection = () => {
         });
     };
 
+    const isSubmissionStep = step === 3;
+
     const goToNextStep = async (
         e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
     ) => {
         e.preventDefault();
-        if (isLastStep) {
+        if (isSubmissionStep) {
             handleSubmit(submitNomination)();
         } else {
             setStep((prevStep) => prevStep + 1);
@@ -144,51 +146,55 @@ const NomineeSelection = () => {
                     errors={allErrors}
                     setStep={setStep}
                     formData={getValues()}
+                    reset={reset}
                 />
-                <ActionArea
-                    className={clsx(
-                        'justify-around tablet:shadow-none px-6 tablet:px-12',
-                        isLastStep
-                            ? ' tablet:justify-center tablet:items-center'
-                            : 'tablet:justify-between'
-                    )}
-                >
-                    <Button
-                        href='#'
-                        variant={ButtonVariant.secondary}
+                {/* Don't show this buttons for the submission submitted */}
+                {step !== 4 ? (
+                    <ActionArea
                         className={clsx(
-                            'w-[104px] h-[50px] border-2',
-                            isLastStep && 'tablet:hidden'
+                            'justify-around tablet:shadow-none px-6 tablet:px-12',
+                            isSubmissionStep
+                                ? ' tablet:justify-center tablet:items-center'
+                                : 'tablet:justify-between'
                         )}
-                        onClick={goToPrevStep}
                     >
-                        BACK
-                    </Button>
-                    <Button
-                        href='#'
-                        className='w-[223px] h-[50px] border-2'
-                        onClick={goToNextStep}
-                        // Don't disable the button if the only error on
-                        // the form is a server error
-                        isDisabled={
-                            isLastStep &&
-                            (isSubmitting ||
-                                Object.keys(errors).length > 1 ||
-                                (Object.keys(errors).length === 1 &&
-                                    !errors.root))
-                        }
-                    >
-                        {isLastStep ? (
-                            isSubmitting ? (
-                                <PiSpinner className='h-6 w-6 text-black animate-spin' />
+                        <Button
+                            href='#'
+                            variant={ButtonVariant.secondary}
+                            className={clsx(
+                                'w-[104px] h-[50px] border-2',
+                                isSubmissionStep && 'tablet:hidden'
+                            )}
+                            onClick={goToPrevStep}
+                        >
+                            BACK
+                        </Button>
+                        <Button
+                            href='#'
+                            className='w-[223px] h-[50px] border-2'
+                            onClick={goToNextStep}
+                            // Don't disable the button if the only error on
+                            // the form is a server error
+                            isDisabled={
+                                isSubmissionStep &&
+                                (isSubmitting ||
+                                    Object.keys(errors).length > 1 ||
+                                    (Object.keys(errors).length === 1 &&
+                                        !errors.root))
+                            }
+                        >
+                            {isSubmissionStep ? (
+                                isSubmitting ? (
+                                    <PiSpinner className='h-6 w-6 text-black animate-spin' />
+                                ) : (
+                                    'SUBMIT'
+                                )
                             ) : (
-                                'SUBMIT'
-                            )
-                        ) : (
-                            'NEXT'
-                        )}
-                    </Button>
-                </ActionArea>
+                                'NEXT'
+                            )}
+                        </Button>
+                    </ActionArea>
+                ) : null}
             </form>
         </div>
     );
