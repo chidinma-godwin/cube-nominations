@@ -9,33 +9,32 @@ import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import ActionArea from '@/components/ActionArea';
 import Button from '@/components/Button';
-import { SignUpInputs, signUpSchema } from './type';
-import { fetchRegister } from '@/data/nominationComponents';
 import useToken from '@/hooks/useToken';
+import { fetchLogin } from '@/data/nominationComponents';
+import { LoginInputs, loginSchema } from './type';
 
-const SignUp = () => {
+const Login = () => {
     const {
         register,
         handleSubmit,
         formState: { isSubmitting, errors },
         setError,
-    } = useForm<SignUpInputs>({
-        resolver: yupResolver(signUpSchema),
+    } = useForm<LoginInputs>({
+        resolver: yupResolver(loginSchema),
     });
 
     const { setAuthToken } = useToken();
 
     const router = useRouter();
 
-    const handleSignup = (
+    const handleLogin = (
         e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
     ) => {
         e.preventDefault();
         handleSubmit(async (data) => {
             try {
-                const response = await fetchRegister({
+                const response = await fetchLogin({
                     body: {
-                        name: data.name,
                         email: data.email,
                         password: data.password,
                     },
@@ -47,14 +46,14 @@ const SignUp = () => {
                     router.push('/');
                 }
             } catch (err: any) {
-                setError('root.signupError', {
+                setError('root.loginError', {
                     message: err.message,
                 });
             }
         })();
     };
 
-    const allErrors: FieldErrors<SignUpInputs> = Object.entries(errors).reduce(
+    const allErrors: FieldErrors<LoginInputs> = Object.entries(errors).reduce(
         (acc, [key, value]) => ({
             ...acc,
             ...(key === 'root' ? { ...value } : { [key]: value }),
@@ -66,24 +65,12 @@ const SignUp = () => {
         <div className='flex flex-col justify-center items-center p-10 bg-white w-full tablet:w-[700px]'>
             <FaUserCircle className='h-20 w-20 text-black mb-10' />
             <p>
-                Already registered?
-                <Link href='/login' className='text-pink ml-2'>
-                    Login
+                Don&apos;t have an account?
+                <Link href='/signup' className='text-pink ml-2'>
+                    Sign up
                 </Link>
             </p>
             <form className='w-full'>
-                <label htmlFor='name' className='block mb-2 font-bold my-4'>
-                    Username
-                </label>
-                <input
-                    type='text'
-                    id='name'
-                    className={clsx(
-                        'border text-black px-1.5 py-3 w-full tablet:w-5/6 font-anonymous mb-6',
-                        errors.name ? 'border-error' : 'border-gray'
-                    )}
-                    {...register('name')}
-                />
                 <label htmlFor='email' className='block mb-2 font-bold my-4'>
                     Email
                 </label>
@@ -108,24 +95,9 @@ const SignUp = () => {
                     )}
                     {...register('password')}
                 />
-                <label
-                    htmlFor='confirm_password'
-                    className='block mb-2 font-bold my-4'
-                >
-                    Confirm Password
-                </label>
-                <input
-                    type='password'
-                    id='confirm_password'
-                    className={clsx(
-                        'border text-black px-1.5 py-3 w-full tablet:w-5/6 font-anonymous mb-6',
-                        errors.confirmPassword ? 'border-error' : 'border-gray'
-                    )}
-                    {...register('confirmPassword')}
-                />
                 <div className='px-6 tablet:px-12 text-error font-anonymous'>
                     {Object.keys(allErrors).length > 0
-                        ? Object.values(errors).map((error) => (
+                        ? Object.values(allErrors).map((error) => (
                               <p key={error.message} className='mb-2'>
                                   {error.message}
                               </p>
@@ -136,15 +108,17 @@ const SignUp = () => {
                     <Button
                         href='/nominee-selection'
                         className='w-full mx-6 tablet:w-[223px] h-[50px] font-bold leading-6'
-                        onClick={handleSignup}
+                        onClick={handleLogin}
                         isDisabled={
-                            Object.keys(errors).length > 0 || isSubmitting
+                            isSubmitting ||
+                            Object.keys(errors).length > 1 ||
+                            (Object.keys(errors).length === 1 && !errors.root)
                         }
                     >
                         {isSubmitting ? (
                             <PiSpinner className='w-6 h-6 text-blaxk animate-spin' />
                         ) : (
-                            'SIGN UP'
+                            'LOGIN'
                         )}
                     </Button>
                 </ActionArea>
@@ -153,4 +127,4 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default Login;

@@ -32,7 +32,7 @@ export type CubeAcademyLoginVariables = {
 /**
  * Login an existing user
  */
-export const fetchCubeAcademyLogin = (
+export const fetchLogin = (
     variables: CubeAcademyLoginVariables,
     signal?: AbortSignal
 ) =>
@@ -65,7 +65,7 @@ export const useCubeAcademyLogin = (
         CubeAcademyLoginVariables
     >({
         mutationFn: (variables: CubeAcademyLoginVariables) =>
-            fetchCubeAcademyLogin({ ...fetcherOptions, ...variables }),
+            fetchLogin({ ...fetcherOptions, ...variables }),
         ...options,
     });
 };
