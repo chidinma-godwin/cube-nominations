@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { FaInbox, FaUserCircle } from 'react-icons/fa';
 import { HiPlus } from 'react-icons/hi';
 import useToken from '@/hooks/useToken';
+import { useGetAllNominations } from '@/data/nominationComponents';
 import { ModalContext } from './Contexts';
 
 const Header = () => {
@@ -15,6 +16,8 @@ const Header = () => {
 
     const router = useRouter();
     const pathname = usePathname();
+
+    const { data } = useGetAllNominations({});
 
     const handleShowNominations = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -76,7 +79,9 @@ const Header = () => {
                             onClick={handleShowNominations}
                         >
                             <span className='hidden tablet:flex tablet:flex-1 tablet:justify-end font-anonymous'>
-                                Your Nominations (0)
+                                {`Your Nominations (${
+                                    data?.data?.length ?? 0
+                                })`}
                             </span>
                             <span className='tablet:hidden flex'>
                                 <HiPlus className='h-6 w-6 text-white mr-2' />
