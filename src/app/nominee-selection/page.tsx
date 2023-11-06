@@ -1,7 +1,7 @@
 'use client';
 
-import { useContext, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useContext, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { PiSpinner } from 'react-icons/pi';
@@ -11,8 +11,12 @@ import ActionArea from '@/components/ActionArea';
 import { ModalContext } from '@/components/Contexts';
 import { FormInputs, formSchema } from './type';
 import CurrentStep from './CurrentStep';
-import { fetchCreateNomination } from '@/data/nominationComponents';
-import { getProcessString } from './utils';
+import {
+    fetchCreateNomination,
+    fetchUpdateNomination,
+    useGetNominationById,
+} from '@/data/nominationComponents';
+import { getProcessFromString, getProcessString } from './utils';
 import useToken from '@/hooks/useToken';
 
 const NomineeSelection = () => {
@@ -20,13 +24,34 @@ const NomineeSelection = () => {
     const { setIsModalOpen, setNextRouteFromModal } = useContext(ModalContext);
     const { authToken } = useToken();
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const { data: nominationData } = useGetNominationById({
+        pathParams: {
+            nominationId: searchParams.get('id') ?? '',
+        },
+    });
+
     const {
         register,
         handleSubmit,
         formState: { isSubmitting, errors },
         getValues,
         setError,
+        setValue,
     } = useForm<FormInputs>({ resolver: yupResolver(formSchema) });
+
+    const { nominee_id, process, reason } = nominationData?.data ?? {};
+
+    useEffect(() => {
+        if (nominee_id && process && reason) {
+            const processValue: FormInputs['process'] =
+                getProcessFromString(process);
+            setValue('nomineeId', nominee_id);
+            setValue('process', processValue);
+            setValue('reason', reason);
+        }
+    }, [nominee_id, process, reason, setValue]);
 
     const openModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault();
@@ -39,16 +64,33 @@ const NomineeSelection = () => {
     const submitNomination: SubmitHandler<FormInputs> = async (data) => {
         const processString = getProcessString(Number(data.process));
         try {
-            await fetchCreateNomination({
-                body: {
-                    nominee_id: data.nomineeId,
-                    reason: data.reason,
-                    process: processString,
-                },
-                headers: {
-                    authorization: `Bearer ${authToken}`,
-                },
-            });
+            const nominationId = nominationData?.data?.nomination_id;
+            if (nominationId) {
+                await fetchUpdateNomination({
+                    headers: {
+                        authorization: `Bearer ${authToken}`,
+                    },
+                    pathParams: {
+                        nominationId,
+                    },
+                    body: {
+                        nominee_id: data.nomineeId,
+                        reason: data.reason,
+                        process: processString,
+                    },
+                });
+            } else {
+                await fetchCreateNomination({
+                    body: {
+                        nominee_id: data.nomineeId,
+                        reason: data.reason,
+                        process: processString,
+                    },
+                    headers: {
+                        authorization: `Bearer ${authToken}`,
+                    },
+                });
+            }
             router.push('/nomination-submitted');
         } catch (error: any) {
             setError('root.createNominationErr', {

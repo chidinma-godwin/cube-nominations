@@ -5,6 +5,12 @@ import ReasonStep from './ReasonStep';
 import ProcessFeedbackStep from './ProcessFeedbackStep';
 import OverviewStep from './OverviewStep';
 import { FormInputs } from './type';
+import { useRetrieveNomineeList } from '@/data/nominationComponents';
+
+export type SelectOptionType = {
+    id?: string;
+    name?: string;
+};
 
 const CurrentStep = (props: {
     step: number;
@@ -13,9 +19,22 @@ const CurrentStep = (props: {
     setStep: Dispatch<SetStateAction<number>>;
     formData: FormInputs;
 }) => {
-    const [nomineeName, setNomineeName] = useState<string | null>(null);
-
     const { step, register, errors, setStep, formData } = props;
+
+    const { data } = useRetrieveNomineeList({});
+
+    const options: SelectOptionType[] =
+        data?.data?.map(({ nominee_id, first_name, last_name }) => ({
+            id: nominee_id,
+            name: first_name && last_name ? `${first_name} ${last_name}` : '',
+        })) ?? [];
+
+    const { first_name, last_name } =
+        data?.data?.find(
+            ({ nominee_id }) => nominee_id === props.formData.nomineeId
+        ) ?? {};
+    const nomineeName =
+        first_name && last_name ? `${first_name} ${last_name}` : '';
 
     switch (step) {
         case 0:
@@ -23,7 +42,7 @@ const CurrentStep = (props: {
                 <SelectionStep
                     register={register}
                     errMsg={errors.nomineeId?.message ?? null}
-                    setNomineeName={setNomineeName}
+                    options={options}
                 />
             );
         case 1:
@@ -55,7 +74,7 @@ const CurrentStep = (props: {
                 <SelectionStep
                     register={register}
                     errMsg={errors.nomineeId?.message ?? null}
-                    setNomineeName={setNomineeName}
+                    options={options}
                 />
             );
     }

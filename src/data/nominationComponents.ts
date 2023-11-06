@@ -144,7 +144,7 @@ export type CubeAcademyRetrieveNomineeListVariables =
 /**
  * Retrieve a complete list of all nominees
  */
-export const fetchCubeAcademyRetrieveNomineeList = (
+export const fetchRetrieveNomineeList = (
     variables: CubeAcademyRetrieveNomineeListVariables,
     signal?: AbortSignal
 ) =>
@@ -184,7 +184,7 @@ export const useRetrieveNomineeList = <TData = Responses.Nominee>(
             variables,
         }),
         queryFn: ({ signal }) =>
-            fetchCubeAcademyRetrieveNomineeList(
+            fetchRetrieveNomineeList(
                 { ...fetcherOptions, ...variables },
                 signal
             ),
@@ -325,7 +325,7 @@ export type CubeAcademyGetNominationByIdVariables = {
 /**
  * Retrieve a specific nomination by ID
  */
-export const fetchCubeAcademyGetNominationById = (
+export const fetchGetNominationById = (
     variables: CubeAcademyGetNominationByIdVariables,
     signal?: AbortSignal
 ) =>
@@ -346,7 +346,7 @@ export const fetchCubeAcademyGetNominationById = (
 /**
  * Retrieve a specific nomination by ID
  */
-export const useCubeAcademyGetNominationById = <TData = Responses.Nomination>(
+export const useGetNominationById = <TData = Responses.Nomination>(
     variables: CubeAcademyGetNominationByIdVariables,
     options?: Omit<
         reactQuery.UseQueryOptions<
@@ -370,10 +370,7 @@ export const useCubeAcademyGetNominationById = <TData = Responses.Nomination>(
             variables,
         }),
         queryFn: ({ signal }) =>
-            fetchCubeAcademyGetNominationById(
-                { ...fetcherOptions, ...variables },
-                signal
-            ),
+            fetchGetNominationById({ ...fetcherOptions, ...variables }, signal),
         ...options,
         ...queryOptions,
     });
@@ -405,7 +402,7 @@ export type CubeAcademyUpdateNominationVariables = {
 /**
  * Update a specific existing nominiation
  */
-export const fetchCubeAcademyUpdateNomination = (
+export const fetchUpdateNomination = (
     variables: CubeAcademyUpdateNominationVariables,
     signal?: AbortSignal
 ) =>
@@ -443,7 +440,7 @@ export const useCubeAcademyUpdateNomination = (
         CubeAcademyUpdateNominationVariables
     >({
         mutationFn: (variables: CubeAcademyUpdateNominationVariables) =>
-            fetchCubeAcademyUpdateNomination({
+            fetchUpdateNomination({
                 ...fetcherOptions,
                 ...variables,
             }),

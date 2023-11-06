@@ -7,7 +7,7 @@ import { RxPencil1 } from 'react-icons/rx';
 import clsx from 'clsx';
 import ActionArea from '@/components/ActionArea';
 import Button, { ButtonVariant } from '@/components/Button';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Modal from '@/components/Modal';
 import {
     fetchDeleteNomination,
@@ -66,6 +66,8 @@ const ViewNominations = () => {
     >(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteErrMsg, setDeleteErrMsg] = useState<string | null>(null);
+
+    const router = useRouter();
 
     const {
         data: nominations,
@@ -167,6 +169,10 @@ const ViewNominations = () => {
         }
     };
 
+    const handleEdit = (id: string) => {
+        router.push(`/nominee-selection?id=${id}`);
+    };
+
     const openModalAndSetIdToDelete = (id: string) => {
         setIsModalOpen(() => {
             setNominationToDeleteId(id);
@@ -266,20 +272,25 @@ const ViewNominations = () => {
                                                 {/* This is to prevent showing the icon when the filtered data is empty */}
                                                 {id ? (
                                                     <span className='flex justify-center align-center'>
-                                                        <button type='button'>
-                                                            <HiOutlineTrash
-                                                                className='h-10 w-10 text-black p-2'
-                                                                onClick={() => {
-                                                                    openModalAndSetIdToDelete(
-                                                                        id
-                                                                    );
-                                                                }}
-                                                            />
+                                                        <button
+                                                            type='button'
+                                                            onClick={() => {
+                                                                openModalAndSetIdToDelete(
+                                                                    id
+                                                                );
+                                                            }}
+                                                        >
+                                                            <HiOutlineTrash className='h-10 w-10 text-black p-2' />
                                                         </button>
 
-                                                        <Link href='/nominee-selection'>
+                                                        <button
+                                                            type='button'
+                                                            onClick={() =>
+                                                                handleEdit(id)
+                                                            }
+                                                        >
                                                             <RxPencil1 className='h-10 w-10 text-black p-2' />
-                                                        </Link>
+                                                        </button>
                                                     </span>
                                                 ) : null}
                                             </td>
@@ -314,7 +325,10 @@ const ViewNominations = () => {
                                             >
                                                 <HiOutlineTrash className='h-10 w-10 text-black p-2 mr-2' />
                                             </button>
-                                            <button type='button'>
+                                            <button
+                                                type='button'
+                                                onClick={() => handleEdit(id)}
+                                            >
                                                 <RxPencil1 className='h-10 w-10 text-black p-2' />
                                             </button>
                                         </div>
