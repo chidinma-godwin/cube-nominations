@@ -69,7 +69,7 @@ const Header = () => {
                                 LOG OUT
                             </button>
                         ) : (
-                            <Link href='/login'>
+                            <Link href='/account/login'>
                                 <FaUserCircle className='h-6 w-6 text-white mr-6' />
                             </Link>
                         )}

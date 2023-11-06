@@ -44,6 +44,7 @@ const SignUp = () => {
 
                 if (authToken) {
                     setAuthToken(authToken);
+                    localStorage.setItem('token', authToken);
                     router.push('/');
                 }
             } catch (err: any) {
@@ -67,7 +68,7 @@ const SignUp = () => {
             <FaUserCircle className='h-20 w-20 text-black mb-10' />
             <p>
                 Already registered?
-                <Link href='/login' className='text-pink ml-2'>
+                <Link href='/account/login' className='text-pink ml-2'>
                     Login
                 </Link>
             </p>

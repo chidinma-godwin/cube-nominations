@@ -43,6 +43,7 @@ const Login = () => {
 
                 if (authToken) {
                     setAuthToken(authToken);
+                    localStorage.setItem('token', authToken);
                     router.push('/');
                 }
             } catch (err: any) {
@@ -66,7 +67,7 @@ const Login = () => {
             <FaUserCircle className='h-20 w-20 text-black mb-10' />
             <p>
                 Don&apos;t have an account?
-                <Link href='/signup' className='text-pink ml-2'>
+                <Link href='/account/signup' className='text-pink ml-2'>
                     Sign up
                 </Link>
             </p>
