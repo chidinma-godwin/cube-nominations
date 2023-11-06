@@ -8,15 +8,12 @@ const ReasonStep = (props: {
     errMsg: string | null;
     nomineeName: string | null;
 }) => {
-    // TODO: Get this from previous user input
-    const nomineeName = 'Random';
-
     return (
         <>
             <div>
                 <ProgressBar percentage={50} />
                 <Image
-                    className='tablet:px-12'
+                    className='tablet:px-12 mx-auto'
                     src='/nomination-reason.svg'
                     width={848}
                     height={402}
@@ -42,6 +39,7 @@ const ReasonStep = (props: {
                 </label>
                 <textarea
                     id='reason'
+                    rows={8}
                     className='border border-gray text-black px-1.5 py-3 w-full font-anonymous mb-10'
                     {...props.register('reason')}
                 />

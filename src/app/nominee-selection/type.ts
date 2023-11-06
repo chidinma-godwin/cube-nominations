@@ -6,7 +6,7 @@ export const formSchema = yup.object({
     process: yup
         .string()
         .oneOf(
-            ['very_unfair', 'unfair', 'not_sure', 'fair', 'very_fair'],
+            ['20', '40', '60', '80', '100'],
             "Your opinion on our selection process must be one of: 'Very unfair', 'unfair', 'Not sure', 'fair', 'Very fair' "
         )
         .required(),

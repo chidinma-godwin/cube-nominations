@@ -1,14 +1,15 @@
+import { Dispatch, SetStateAction } from 'react';
 import { FieldErrors } from 'react-hook-form';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RxPencil1 } from 'react-icons/rx';
 import ProgressBar from '@/components/ProgressBar';
 import { FormInputs } from './type';
-import { Dispatch, SetStateAction } from 'react';
+import { getProcessString } from './utils';
 
 type OverviewItemProps = {
     question: string;
-    answer: string;
+    answer: string | null;
     setStep: Dispatch<SetStateAction<number>>;
     index: number;
 };
@@ -28,20 +29,21 @@ const Item = (props: OverviewItemProps) => (
 const OverviewStep = (props: {
     errors: FieldErrors<FormInputs>;
     setStep: Dispatch<SetStateAction<number>>;
+    formData: FormInputs;
+    nomineeName: string | null;
 }) => {
-    // TODO: Get this dynamically
     const summary = [
         {
             question: "Cube's Name",
-            answer: 'Some answer',
+            answer: props.nomineeName,
         },
         {
             question: 'Reasoning',
-            answer: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam impedit accusamus cum ex ducimus assumenda!',
+            answer: props.formData.reason,
         },
         {
             question: 'Thoughts on Current Process',
-            answer: 'Honest answer',
+            answer: getProcessString(Number(props.formData.process)),
         },
     ];
 

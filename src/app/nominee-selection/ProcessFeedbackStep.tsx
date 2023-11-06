@@ -46,7 +46,9 @@ const ProcessFeedbackStep = (props: {
                     <Radio register={props.register} />
                 )}
                 {props.errMsg ? (
-                    <p className='text-error font-anonymous'>{props.errMsg}</p>
+                    <p className='text-error font-anonymous mt-6'>
+                        {props.errMsg}
+                    </p>
                 ) : null}
             </div>
         </>

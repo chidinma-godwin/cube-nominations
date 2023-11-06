@@ -1,19 +1,55 @@
+import { Dispatch, SetStateAction } from 'react';
 import Image from 'next/image';
 import { UseFormRegister } from 'react-hook-form';
-import { PiCaretDownBold } from 'react-icons/pi';
 import ProgressBar from '@/components/ProgressBar';
 import { FormInputs } from './type';
+import { useRetrieveNomineeList } from '@/data/nominationComponents';
+import clsx from 'clsx';
 
 const SelectionStep = (props: {
     register: UseFormRegister<FormInputs>;
+    setNomineeName: Dispatch<SetStateAction<string | null>>;
     errMsg: string | null;
 }) => {
+    const {
+        data,
+        error: fetchErr,
+        isLoading,
+    } = useRetrieveNomineeList({
+        headers: {
+            Authorization: `Bearer 477|b46gNBw9ULXSgXLp8dL3UJLhG1Z3GAQzt7Dv8PsX6551090a`,
+        },
+    });
+
+    const { onChange, ...restSelectProps } = props.register('nomineeId');
+
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        onChange(e);
+        if (data?.data != null && data?.data.length > 0) {
+            const selectedNominee = data.data.find(
+                ({ nominee_id }) => nominee_id === e.target.value
+            );
+
+            if (selectedNominee != null) {
+                props.setNomineeName(selectedNominee.first_name ?? null);
+            }
+        }
+    };
+
+    const options =
+        data?.data?.map(({ nominee_id, first_name, last_name }) => {
+            return {
+                id: nominee_id,
+                name: `${first_name} ${last_name}`,
+            };
+        }) ?? [];
+
     return (
         <>
             <div>
                 <ProgressBar percentage={25} />
                 <Image
-                    className='tablet:px-12'
+                    className='mx-auto tablet:px-8'
                     src='/nominee-selection.svg'
                     width={848}
                     height={402}
@@ -29,26 +65,38 @@ const SelectionStep = (props: {
                     honourable this month or just all round has a great work
                     ethic.
                 </p>
-                {/* <form> */}
                 <label htmlFor='nominees' className='block mb-2 font-bold my-4'>
                     Cube&apos;s name
                 </label>
-                <div id='nominees' className='relative w-[55%]'>
-                    <button type='button'>
+                {/* <div id='nominees' className='relative w-[55%]'> */}
+                {/* <button type='button'>
                         <PiCaretDownBold className='absolute right-4 top-[15%] w-6 h-6 text-pink' />
-                    </button>
-                    <select
-                        className='border border-gray text-black px-1.5 py-3 w-full font-anonymous mb-10 appearance-none'
-                        {...props.register('nomineeId')}
-                    >
-                        {/* TODO: Fetch the nominees list and display them here */}
-                        <option>Select Option</option>
-                        <option>Select Option</option>
-                        <option>Select Option</option>
-                        <option>Select Option</option>
-                        <option>Select Option</option>
-                    </select>
-                </div>
+                   appearance-none
+                   </button> */}
+                <select
+                    id='nominees'
+                    className={clsx(
+                        'border text-black px-1.5 py-3 w-[55%] font-anonymous mb-10',
+                        props.errMsg || fetchErr
+                            ? 'border-error'
+                            : 'border-gray'
+                    )}
+                    {...restSelectProps}
+                    onChange={handleChange}
+                >
+                    <option value=''>Select Option</option>
+                    {options.map(({ id, name }) => (
+                        <option key={id} value={id}>
+                            {name}
+                        </option>
+                    ))}
+                </select>
+                {/* </div> */}
+                {fetchErr ? (
+                    <p className='text-error font-anonymous'>
+                        {fetchErr.payload}
+                    </p>
+                ) : null}
                 {props.errMsg ? (
                     <p className='text-error font-anonymous'>{props.errMsg}</p>
                 ) : null}

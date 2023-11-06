@@ -1,78 +1,29 @@
 'use client';
 
-import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-    useForm,
-    SubmitHandler,
-    UseFormRegister,
-    FieldErrors,
-} from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { PiSpinner } from 'react-icons/pi';
 import clsx from 'clsx';
 import Button, { ButtonVariant } from '@/components/Button';
 import ActionArea from '@/components/ActionArea';
 import { ModalContext } from '@/components/Contexts';
-import SelectionStep from './SelectionStep';
-import ReasonStep from './ReasonStep';
-import ProcessFeedbackStep from './ProcessFeedbackStep';
-import OverviewStep from './OverviewStep';
 import { FormInputs, formSchema } from './type';
-
-const CurrentStepComponent = (props: {
-    step: number;
-    register: UseFormRegister<FormInputs>;
-    errors: FieldErrors<FormInputs>;
-    setStep: Dispatch<SetStateAction<number>>;
-    nomineeName: string | null;
-}) => {
-    const { step, register, errors, setStep } = props;
-
-    switch (step) {
-        case 0:
-            return (
-                <SelectionStep
-                    register={register}
-                    errMsg={errors.nomineeId?.message ?? null}
-                />
-            );
-        case 1:
-            return (
-                <ReasonStep
-                    register={register}
-                    errMsg={errors.reason?.message ?? null}
-                    nomineeName={props.nomineeName}
-                />
-            );
-        case 2:
-            return (
-                <ProcessFeedbackStep
-                    register={register}
-                    errMsg={errors.process?.message ?? null}
-                />
-            );
-        case 3:
-            return <OverviewStep errors={errors} setStep={setStep} />;
-        default:
-            return (
-                <SelectionStep
-                    register={register}
-                    errMsg={errors.nomineeId?.message ?? null}
-                />
-            );
-    }
-};
+import CurrentStep from './CurrentStep';
+import { fetchCreateNomination } from '@/data/nominationComponents';
+import { getProcessString } from './utils';
 
 const NomineeSelection = () => {
     const [step, setStep] = useState(0);
-    const [nomineeName, setNomineeName] = useState<string | null>(null);
     const { setIsModalOpen, setNextRouteFromModal } = useContext(ModalContext);
     const router = useRouter();
     const {
         register,
         handleSubmit,
         formState: { isSubmitting, errors },
+        getValues,
+        setError,
     } = useForm<FormInputs>({ resolver: yupResolver(formSchema) });
 
     const openModal = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -83,10 +34,25 @@ const NomineeSelection = () => {
 
     const isLastStep = step === 3;
 
-    const submitNomination: SubmitHandler<FormInputs> = (data) => {
-        // TODO: Set the nominee name from the fetched data
-        setNomineeName('Some Name');
-        router.push('/nomination-submitted');
+    const submitNomination: SubmitHandler<FormInputs> = async (data) => {
+        const processString = getProcessString(Number(data.process));
+        try {
+            await fetchCreateNomination({
+                body: {
+                    nominee_id: data.nomineeId,
+                    reason: data.reason,
+                    process: processString,
+                },
+                headers: {
+                    Authorization: `Bearer 477|b46gNBw9ULXSgXLp8dL3UJLhG1Z3GAQzt7Dv8PsX6551090a`,
+                },
+            });
+            router.push('/nomination-submitted');
+        } catch (error: any) {
+            setError('root.createNominationErr', {
+                message: error.message,
+            });
+        }
     };
 
     const goToPrevStep = (
@@ -102,27 +68,34 @@ const NomineeSelection = () => {
         });
     };
 
-    const goToNextStep = (
+    const goToNextStep = async (
         e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
     ) => {
         e.preventDefault();
         if (isLastStep) {
             handleSubmit(submitNomination)();
-            // router.push('/nomination-submitted');
         } else {
             setStep((prevStep) => prevStep + 1);
         }
     };
 
+    const allErrors = Object.entries(errors).reduce(
+        (acc, [key, value]) => ({
+            ...acc,
+            ...(key === 'root' ? { ...value } : { [key]: value }),
+        }),
+        {}
+    );
+
     return (
         <div className='max-w-screen-tablet bg-white'>
             <form>
-                <CurrentStepComponent
+                <CurrentStep
                     step={step}
                     register={register}
-                    errors={errors}
+                    errors={allErrors}
                     setStep={setStep}
-                    nomineeName={nomineeName}
+                    formData={getValues()}
                 />
                 <ActionArea
                     className={clsx(
@@ -147,14 +120,19 @@ const NomineeSelection = () => {
                         href='#'
                         className='w-[223px] h-[50px] border-2'
                         onClick={goToNextStep}
+                        // Don't disable the button if the only error on
+                        // the form is a server error
                         isDisabled={
                             isLastStep &&
-                            (isSubmitting || Object.keys(errors).length > 0)
+                            (isSubmitting ||
+                                Object.keys(errors).length > 1 ||
+                                (Object.keys(errors).length === 1 &&
+                                    !errors.root))
                         }
                     >
                         {isLastStep ? (
                             isSubmitting ? (
-                                <PiSpinner className='h-6 w-6 text-black' />
+                                <PiSpinner className='h-6 w-6 text-black animate-spin' />
                             ) : (
                                 'SUBMIT'
                             )
