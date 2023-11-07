@@ -4,6 +4,14 @@ This is project was bootstrapped with [`create-next-app`](https://github.com/ver
 
 ## Getting Started
 
+install dependencies and run the production build with the command below
+
+```bash
+yarn install
+yarn build
+yarn start
+```
+
 Install dependencies and run the development server with the command below
 
 ```bash
@@ -11,7 +19,7 @@ yarn install
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
 ## Extra Features
 
