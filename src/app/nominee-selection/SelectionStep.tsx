@@ -37,7 +37,7 @@ const SelectionStep = (props: {
                 <select
                     id='nominees'
                     className={clsx(
-                        'border text-black px-1.5 py-3 w-[55%] font-anonymous mb-10',
+                        'w-full border text-black px-1.5 py-3 tablet:w-[55%] font-anonymous mb-10',
                         props.errMsg ? 'border-error' : 'border-gray'
                     )}
                     {...props.register('nomineeId')}

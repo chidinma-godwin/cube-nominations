@@ -95,7 +95,7 @@ const NomineeSelection = () => {
                 });
             }
 
-            setStep(4);
+            router.push('/nomination-submitted');
         } catch (error: any) {
             setError('root.createNominationErr', {
                 message: error.message,
@@ -146,55 +146,53 @@ const NomineeSelection = () => {
                     errors={allErrors}
                     setStep={setStep}
                     formData={getValues()}
-                    reset={reset}
                 />
                 {/* Don't show this buttons for the submission submitted */}
-                {step !== 4 ? (
-                    <ActionArea
+
+                <ActionArea
+                    className={clsx(
+                        'justify-around tablet:shadow-none px-6 tablet:px-12',
+                        isSubmissionStep
+                            ? ' tablet:justify-center tablet:items-center'
+                            : 'tablet:justify-between'
+                    )}
+                >
+                    <Button
+                        href='#'
+                        variant={ButtonVariant.secondary}
                         className={clsx(
-                            'justify-around tablet:shadow-none px-6 tablet:px-12',
-                            isSubmissionStep
-                                ? ' tablet:justify-center tablet:items-center'
-                                : 'tablet:justify-between'
+                            'w-[104px] h-[50px] border-2',
+                            isSubmissionStep && 'tablet:hidden'
                         )}
+                        onClick={goToPrevStep}
                     >
-                        <Button
-                            href='#'
-                            variant={ButtonVariant.secondary}
-                            className={clsx(
-                                'w-[104px] h-[50px] border-2',
-                                isSubmissionStep && 'tablet:hidden'
-                            )}
-                            onClick={goToPrevStep}
-                        >
-                            BACK
-                        </Button>
-                        <Button
-                            href='#'
-                            className='w-[223px] h-[50px] border-2'
-                            onClick={goToNextStep}
-                            // Don't disable the button if the only error on
-                            // the form is a server error
-                            isDisabled={
-                                isSubmissionStep &&
-                                (isSubmitting ||
-                                    Object.keys(errors).length > 1 ||
-                                    (Object.keys(errors).length === 1 &&
-                                        !errors.root))
-                            }
-                        >
-                            {isSubmissionStep ? (
-                                isSubmitting ? (
-                                    <PiSpinner className='h-6 w-6 text-black animate-spin' />
-                                ) : (
-                                    'SUBMIT'
-                                )
+                        BACK
+                    </Button>
+                    <Button
+                        href='#'
+                        className='w-[223px] h-[50px] border-2'
+                        onClick={goToNextStep}
+                        // Don't disable the button if the only error on
+                        // the form is a server error
+                        isDisabled={
+                            isSubmissionStep &&
+                            (isSubmitting ||
+                                Object.keys(errors).length > 1 ||
+                                (Object.keys(errors).length === 1 &&
+                                    !errors.root))
+                        }
+                    >
+                        {isSubmissionStep ? (
+                            isSubmitting ? (
+                                <PiSpinner className='h-6 w-6 text-black animate-spin' />
                             ) : (
-                                'NEXT'
-                            )}
-                        </Button>
-                    </ActionArea>
-                ) : null}
+                                'SUBMIT'
+                            )
+                        ) : (
+                            'NEXT'
+                        )}
+                    </Button>
+                </ActionArea>
             </form>
         </div>
     );

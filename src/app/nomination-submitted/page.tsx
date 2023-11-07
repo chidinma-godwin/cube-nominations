@@ -1,20 +1,14 @@
-import { Dispatch, SetStateAction } from 'react';
 import Image from 'next/image';
-import { UseFormReset } from 'react-hook-form';
 import ActionArea from '@/components/ActionArea';
 import Button, { ButtonVariant } from '@/components/Button';
-import { FormInputs } from './type';
 
-const NominationSubmited = (props: {
-    setStep: Dispatch<SetStateAction<number>>;
-    reset: UseFormReset<FormInputs>;
-}) => {
+const NominationSubmited = () => {
     return (
         <div className='max-w-screen-tablet bg-white'>
             <Image
                 src='/success.svg'
                 width={848}
-                height={402}
+                height={323.3}
                 alt='Team members having fun at the beach'
             />
             <div className='p-6 tablet:p-8'>
@@ -34,14 +28,9 @@ const NominationSubmited = (props: {
                         VIEW NOMINATIONS
                     </Button>
                     <Button
-                        href='#'
+                        href='/nominee-selection'
                         variant={ButtonVariant.secondary}
                         className='w-full mx-6 tablet:w-[223px] h-[50px] border-2 font-bold'
-                        onClick={(e) => {
-                            e.preventDefault();
-                            props.reset();
-                            props.setStep(0);
-                        }}
                     >
                         CREATE NEW NOMINATION
                     </Button>

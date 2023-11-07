@@ -8,7 +8,6 @@ import ProcessFeedbackStep from './ProcessFeedbackStep';
 import OverviewStep from './OverviewStep';
 import { FormInputs } from './type';
 import { useRetrieveNomineeList } from '@/data/nominationComponents';
-import NominationSubmited from './NominationSubmitted';
 
 export type SelectOptionType = {
     id?: string;
@@ -21,7 +20,6 @@ const CurrentStep = (props: {
     errors: FieldErrors<FormInputs>;
     setStep: Dispatch<SetStateAction<number>>;
     formData: FormInputs;
-    reset: UseFormReset<FormInputs>;
 }) => {
     const { step, register, errors, setStep, formData } = props;
 
@@ -71,13 +69,6 @@ const CurrentStep = (props: {
                     setStep={setStep}
                     nomineeName={nomineeName}
                     formData={formData}
-                />
-            );
-        case 4:
-            return (
-                <NominationSubmited
-                    setStep={props.setStep}
-                    reset={props.reset}
                 />
             );
         default:
