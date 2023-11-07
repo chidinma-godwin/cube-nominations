@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import EmptyNominations from './EmptyNominations';
 import { HiOutlineTrash } from 'react-icons/hi';
 import { RxPencil1 } from 'react-icons/rx';
@@ -97,7 +97,7 @@ const ViewNominations = () => {
         nominees: nomineesData?.data,
     });
 
-    const [filteredData, setFilteredData] = useState<NominationType[]>(data);
+    const [filteredData, setFilteredData] = useState<NominationType[]>([]);
 
     useLayoutEffect(() => {
         if (!authToken) {
@@ -105,16 +105,7 @@ const ViewNominations = () => {
         }
     }, [router, authToken]);
 
-    useEffect(() => {
-        if (isFetched && isNomineeListFetched) {
-            setFilteredData(data);
-        }
-
-        // We only want to run this when the data is initially fetched
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isFetched, isNomineeListFetched]);
-
-    const filterCurrent = () => {
+    const filterCurrent = useCallback(() => {
         setSortBy(SortByType.current);
         const filteredNominations = data.filter(
             ({ dueDate }) =>
@@ -138,9 +129,9 @@ const ViewNominations = () => {
                 },
             ]);
         }
-    };
+    }, [data]);
 
-    const filterClosed = () => {
+    const filterClosed = useCallback(() => {
         setSortBy(SortByType.closed);
 
         const filteredNominations = data.filter(
@@ -164,7 +155,20 @@ const ViewNominations = () => {
                 },
             ]);
         }
-    };
+    }, [data]);
+
+    useEffect(() => {
+        if (isFetched && isNomineeListFetched) {
+            if (sortBy === SortByType.current) {
+                filterCurrent();
+            } else {
+                filterClosed;
+            }
+        }
+
+        // We only want to run this when the data is initially fetched
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isFetched, isNomineeListFetched]);
 
     const handleDelete = async () => {
         try {
