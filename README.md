@@ -32,4 +32,6 @@ If I had more time I would have used a `Content Management System` to host the t
 
 I would also have saved the user login token in `redis` instead of the local storage for security reasons.
 
+Most importantly I would have added unit and end-to-end test.
+
 **The deployed app can be viewed [here](https://cube-nomination-q7pxklfpx-gchidex.vercel.app/)**
