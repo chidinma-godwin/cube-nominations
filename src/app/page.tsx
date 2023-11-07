@@ -9,7 +9,7 @@ const Home = () => {
                 className='w-full'
                 width={800}
                 height={305}
-                src='/hero.svg'
+                src='/hero.png'
                 alt='Team members at the office'
                 priority
             />

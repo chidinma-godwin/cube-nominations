@@ -6,7 +6,7 @@ const NominationSubmited = () => {
     return (
         <div className='max-w-screen-tablet bg-white'>
             <Image
-                src='/success.svg'
+                src='/success.png'
                 width={848}
                 height={323.3}
                 alt='Team members having fun at the beach'

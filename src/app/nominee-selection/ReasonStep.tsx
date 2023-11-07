@@ -14,7 +14,7 @@ const ReasonStep = (props: {
                 <ProgressBar percentage={50} />
                 <Image
                     className='tablet:px-12 mx-auto'
-                    src='/nomination-reason.svg'
+                    src='/nomination-reason.png'
                     width={848}
                     height={180}
                     alt='Colleagues having conversation about work'

@@ -16,7 +16,7 @@ const SelectionStep = (props: {
                 <ProgressBar percentage={25} />
                 <Image
                     className='mx-auto tablet:px-8'
-                    src='/nominee-selection.svg'
+                    src='/nominee-selection.png'
                     width={848}
                     height={407.04}
                     alt='Two colleagues discussing'

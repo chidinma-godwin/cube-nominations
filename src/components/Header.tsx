@@ -41,19 +41,23 @@ const Header = () => {
                     className='flex items-center justify-between p-4'
                     aria-label='Nominations'
                 >
-                    <Link href='/' className='-m-1.5 p-1.5'>
+                    <Link
+                        aria-label='Go to home page'
+                        href='/'
+                        className='-m-1.5 p-1.5'
+                    >
                         <Image
                             className='hidden tablet:flex'
                             width={238.19}
                             height={37.24}
-                            src='/desktop-logo.svg'
+                            src='/desktop-logo.png'
                             alt=''
                         />
                         <Image
                             className='tablet:hidden'
                             width={40}
                             height={37}
-                            src='/mobile-logo.svg'
+                            src='/mobile-logo.png'
                             alt=''
                         />
                     </Link>
@@ -74,11 +78,12 @@ const Header = () => {
                                 LOG OUT
                             </button>
                         ) : (
-                            <Link href='/account/login'>
+                            <Link href='/account/login' aria-label='Login'>
                                 <FaUserCircle className='h-6 w-6 text-white mr-6' />
                             </Link>
                         )}
                         <button
+                            aria-label='Your nominations'
                             type='button'
                             className='leading-[30px] text-white'
                             onClick={handleShowNominations}

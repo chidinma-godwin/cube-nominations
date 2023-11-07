@@ -56,7 +56,7 @@ const OverviewStep = (props: {
                 <ProgressBar percentage={100} />
                 <Image
                     className='tablet:px-12'
-                    src='/overview.svg'
+                    src='/overview.png'
                     width={848}
                     height={175.77}
                     alt='A man working on his laptop'

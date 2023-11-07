@@ -12,11 +12,15 @@ const Footer = () => {
     return (
         <footer className='bg-black py-6 px-12 desktop:px-24 tablet:mt-24'>
             <div className='mb-6'>
-                <Link href='/' className='-m-1.5 p-1.5 flex items-center'>
+                <Link
+                    aria-label='Go to home page'
+                    href='/'
+                    className='-m-1.5 p-1.5 flex items-center'
+                >
                     <Image
                         width={238.19}
                         height={37.24}
-                        src='/desktop-logo.svg'
+                        src='/desktop-logo.png'
                         alt=''
                     />
                 </Link>
@@ -56,11 +60,41 @@ const Footer = () => {
                 <div className='mb-10'>
                     <span className='font-bold leading-[15px]'>Get Social</span>
                     <div className='flex mt-2'>
-                        <FaTwitter className='h-6 w-6 text-white mr-2' />
-                        <FaInstagram className='h-6 w-6 text-white mr-2' />
-                        <FaFacebookF className='h-6 w-6 text-white mr-2' />
-                        <FaLinkedin className='h-6 w-6 text-white mr-2' />
-                        <FaYoutube className='h-6 w-6 text-white mr-2' />
+                        <a
+                            href='https://twitter.com/3sidedcube'
+                            aria-label='twitter'
+                            target='_blank'
+                        >
+                            <FaTwitter className='h-6 w-6 text-white mr-2' />
+                        </a>
+                        <a
+                            href='https://instagram.com/3sidedcube'
+                            aria-label='instagram'
+                            target='_blank'
+                        >
+                            <FaInstagram className='h-6 w-6 text-white mr-2' />
+                        </a>
+                        <a
+                            href='https://facebook.com/3sidedcube'
+                            aria-label='facebook'
+                            target='_blank'
+                        >
+                            <FaFacebookF className='h-6 w-6 text-white mr-2' />
+                        </a>
+                        <a
+                            href='https://www.linkedin.com/company/3-sided-cube'
+                            aria-label='linkedin'
+                            target='_blank'
+                        >
+                            <FaLinkedin className='h-6 w-6 text-white mr-2' />
+                        </a>
+                        <a
+                            href='https://youtube.com/3sidedcube'
+                            aria-label='youtube'
+                            target='_blank'
+                        >
+                            <FaYoutube className='h-6 w-6 text-white mr-2' />
+                        </a>
                     </div>
                 </div>
             </div>

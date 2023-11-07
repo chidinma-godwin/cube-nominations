@@ -302,6 +302,7 @@ const ViewNominations = () => {
                                                 {id ? (
                                                     <span className='flex justify-center align-center'>
                                                         <button
+                                                            aria-label='Delete nomination'
                                                             type='button'
                                                             onClick={() => {
                                                                 openModalAndSetIdToDelete(
@@ -313,6 +314,7 @@ const ViewNominations = () => {
                                                         </button>
 
                                                         <Link
+                                                            aria-label='Edit nomination'
                                                             href={`/nominee-selection?id=${id}`}
                                                         >
                                                             <RxPencil1 className='h-10 w-10 text-black p-2' />
@@ -342,6 +344,7 @@ const ViewNominations = () => {
                                     {id ? (
                                         <div className='flex justify-center align-center'>
                                             <button
+                                                aria-label='Delete nomination'
                                                 type='button'
                                                 onClick={() =>
                                                     openModalAndSetIdToDelete(
@@ -352,6 +355,7 @@ const ViewNominations = () => {
                                                 <HiOutlineTrash className='h-10 w-10 text-black p-2 mr-2' />
                                             </button>
                                             <Link
+                                                aria-label='Edit nomination'
                                                 href={`/nominee-selection?id=${id}`}
                                             >
                                                 <RxPencil1 className='h-10 w-10 text-black p-2' />
