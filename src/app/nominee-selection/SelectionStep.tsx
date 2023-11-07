@@ -18,7 +18,7 @@ const SelectionStep = (props: {
                     className='mx-auto tablet:px-8'
                     src='/nominee-selection.svg'
                     width={848}
-                    height={402}
+                    height={407.04}
                     alt='Two colleagues discussing'
                 />
             </div>

@@ -24,10 +24,10 @@ const ProcessFeedbackStep = (props: {
             <div>
                 <ProgressBar percentage={75} />
                 <Image
-                    className='tablet:px-12'
+                    className='tablet:px-12 w-full'
                     src='/process-fairness.svg'
                     width={848}
-                    height={402}
+                    height={175.77}
                     alt='Someone playing snooker'
                 />
             </div>

@@ -58,7 +58,7 @@ const OverviewStep = (props: {
                     className='tablet:px-12'
                     src='/overview.svg'
                     width={848}
-                    height={402}
+                    height={175.77}
                     alt='A man working on his laptop'
                 />
             </div>

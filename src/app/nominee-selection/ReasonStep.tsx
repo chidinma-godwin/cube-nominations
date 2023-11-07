@@ -16,7 +16,7 @@ const ReasonStep = (props: {
                     className='tablet:px-12 mx-auto'
                     src='/nomination-reason.svg'
                     width={848}
-                    height={402}
+                    height={180}
                     alt='Colleagues having conversation about work'
                 />
             </div>

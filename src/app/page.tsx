@@ -6,9 +6,9 @@ const Home = () => {
     return (
         <div className='max-w-screen-tablet bg-white'>
             <Image
-                className=''
-                width={848}
-                height={402}
+                className='w-full'
+                width={800}
+                height={305}
                 src='/hero.svg'
                 alt='Team members at the office'
             />
