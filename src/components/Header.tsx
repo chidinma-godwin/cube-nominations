@@ -64,6 +64,7 @@ const Header = () => {
                                 className='leading-[30px] text-white font-anonymous mr-6'
                                 onClick={() => {
                                     setAuthToken(null);
+                                    localStorage.removeItem('token');
                                     queryClient.clear();
                                     if (pathname != '/') {
                                         router.push('/');
