@@ -17,7 +17,6 @@ import {
 } from '@/data/nominationComponents';
 import { Nominations, Nominee } from '@/data/nominationResponses';
 import TableSkeleton from './TableSkeleton';
-import useToken from '@/hooks/useToken';
 
 type NominationType = {
     id: string;
@@ -91,8 +90,6 @@ const ViewNominations = () => {
 
     const { mutateAsync } = useDeleteNomination();
 
-    const { authToken } = useToken();
-
     const data: NominationType[] = getFormattedData({
         nominations: nominations?.data,
         nominees: nomineesData?.data,
@@ -101,10 +98,10 @@ const ViewNominations = () => {
     const [filteredData, setFilteredData] = useState<NominationType[]>([]);
 
     useLayoutEffect(() => {
-        if (!authToken) {
+        if (!localStorage.getItem('token')) {
             router.push('/account/login');
         }
-    }, [router, authToken]);
+    }, [router]);
 
     const filterCurrent = useCallback(() => {
         setSortBy(SortByType.current);

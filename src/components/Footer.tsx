@@ -14,8 +14,8 @@ const Footer = () => {
             <div className='mb-6'>
                 <Link href='/' className='-m-1.5 p-1.5 flex items-center'>
                     <Image
-                        width={250}
-                        height={250}
+                        width={238.19}
+                        height={37.24}
                         src='/desktop-logo.svg'
                         alt=''
                     />

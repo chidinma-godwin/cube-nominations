@@ -11,6 +11,7 @@ const Home = () => {
                 height={305}
                 src='/hero.svg'
                 alt='Team members at the office'
+                priority
             />
             <div className='bg-white pt-3 pb-11 px-4 tablet:px-32 text-center'>
                 <h1 className='font-bold text-3xl mt-6 mb-2'>

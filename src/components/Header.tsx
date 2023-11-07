@@ -45,7 +45,7 @@ const Header = () => {
                         <Image
                             className='hidden tablet:flex'
                             width={238.19}
-                            height={37}
+                            height={37.24}
                             src='/desktop-logo.svg'
                             alt=''
                         />
