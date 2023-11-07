@@ -5,6 +5,7 @@ import EmptyNominations from './EmptyNominations';
 import { HiOutlineTrash } from 'react-icons/hi';
 import { RxPencil1 } from 'react-icons/rx';
 import clsx from 'clsx';
+import Link from 'next/link';
 import ActionArea from '@/components/ActionArea';
 import Button, { ButtonVariant } from '@/components/Button';
 import { useRouter } from 'next/navigation';
@@ -188,10 +189,6 @@ const ViewNominations = () => {
         }
     };
 
-    const handleEdit = (id: string) => {
-        router.push(`/nominee-selection?id=${id}`);
-    };
-
     const openModalAndSetIdToDelete = (id: string) => {
         setIsModalOpen(() => {
             setNominationToDeleteId(id);
@@ -318,14 +315,11 @@ const ViewNominations = () => {
                                                             <HiOutlineTrash className='h-10 w-10 text-black p-2' />
                                                         </button>
 
-                                                        <button
-                                                            type='button'
-                                                            onClick={() =>
-                                                                handleEdit(id)
-                                                            }
+                                                        <Link
+                                                            href={`/nominee-selection?id=${id}`}
                                                         >
                                                             <RxPencil1 className='h-10 w-10 text-black p-2' />
-                                                        </button>
+                                                        </Link>
                                                     </span>
                                                 ) : null}
                                             </td>
@@ -360,12 +354,11 @@ const ViewNominations = () => {
                                             >
                                                 <HiOutlineTrash className='h-10 w-10 text-black p-2 mr-2' />
                                             </button>
-                                            <button
-                                                type='button'
-                                                onClick={() => handleEdit(id)}
+                                            <Link
+                                                href={`/nominee-selection?id=${id}`}
                                             >
                                                 <RxPencil1 className='h-10 w-10 text-black p-2' />
-                                            </button>
+                                            </Link>
                                         </div>
                                     ) : null}
                                 </div>

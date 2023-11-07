@@ -34,4 +34,4 @@ I would also have saved the user login token in `redis` instead of the local sto
 
 Most importantly I would have added unit and end-to-end test.
 
-**The deployed app can be viewed [here](https://cube-nomination-q7pxklfpx-gchidex.vercel.app/)**
+**The deployed app can be viewed [here](https://cube-nomination.vercel.app/)**

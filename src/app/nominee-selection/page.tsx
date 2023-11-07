@@ -39,13 +39,12 @@ const NomineeSelection = () => {
         getValues,
         setError,
         setValue,
-        reset,
     } = useForm<FormInputs>({ resolver: yupResolver(formSchema) });
 
     const { nominee_id, process, reason } = nominationData?.data ?? {};
 
     const { mutateAsync: createNominationAsync } = useCreateNomination();
-    const { mutateAsync: updataNominationAsync } = useUpdateNomination();
+    const { mutateAsync: updateNominationAsync } = useUpdateNomination();
 
     useLayoutEffect(() => {
         if (!authToken) {
@@ -75,7 +74,7 @@ const NomineeSelection = () => {
         try {
             const nominationId = searchParams.get('id');
             if (nominationId) {
-                await updataNominationAsync({
+                await updateNominationAsync({
                     pathParams: {
                         nominationId,
                     },
