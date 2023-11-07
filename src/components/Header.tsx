@@ -9,6 +9,7 @@ import { HiPlus } from 'react-icons/hi';
 import useToken from '@/hooks/useToken';
 import { useGetAllNominations } from '@/data/nominationComponents';
 import { ModalContext } from './Contexts';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Header = () => {
     const { setIsModalOpen, setNextRouteFromModal } = useContext(ModalContext);
@@ -18,6 +19,8 @@ const Header = () => {
     const pathname = usePathname();
 
     const { data } = useGetAllNominations({});
+
+    const queryClient = useQueryClient();
 
     const handleShowNominations = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -61,6 +64,7 @@ const Header = () => {
                                 className='leading-[30px] text-white font-anonymous mr-6'
                                 onClick={() => {
                                     setAuthToken(null);
+                                    queryClient.clear();
                                     if (pathname != '/') {
                                         router.push('/');
                                     }
