@@ -32,7 +32,9 @@ The extra features I added are:
 
 ## Challenges
 
-The only major challenge I had was deciding on the breakpoint. I had to check online to compare suggested breakpoints and also consider the look of the application at those breakpoint to eventually decide on the breakpoint to use. Other challenges where minor bug detecting and fixing challanges
+One of the challenge I had was deciding on the breakpoint. I had to check online to compare suggested breakpoints and also consider the look of the application at those breakpoint to eventually decide on the breakpoint to use.
+
+I also noticed performance issues causing slow page load and slow navigation between the pages. I had to use ` Profiler` and `Lighthouse` to audit the app and I discovered that the image sizes were too big and were causing the page navigation delay. I changed the images to smaller sized images.
 
 ## Other Feature Ideas Not Implemented
 
@@ -40,6 +42,6 @@ If I had more time I would have used a `Content Management System` to host the t
 
 I would also have saved the user login token in `redis` instead of the local storage for security reasons.
 
-Most importantly I would have added unit and end-to-end test.
+Most importantly I would have added unit and end-to-end tests.
 
 **The deployed app can be viewed [here](https://cube-nomination.vercel.app/)**
