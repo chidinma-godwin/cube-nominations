@@ -300,7 +300,7 @@ const ViewNominations = () => {
                                             <td className='w-[5%]  p-4'>
                                                 {/* This is to prevent showing the icon when the filtered data is empty */}
                                                 {id ? (
-                                                    <span className='flex justify-center align-center'>
+                                                    <span className='flex justify-center items-center'>
                                                         <button
                                                             aria-label='Delete nomination'
                                                             type='button'
@@ -342,7 +342,7 @@ const ViewNominations = () => {
                                     </div>
 
                                     {id ? (
-                                        <div className='flex justify-center align-center'>
+                                        <div className='flex justify-center items-center'>
                                             <button
                                                 aria-label='Delete nomination'
                                                 type='button'
