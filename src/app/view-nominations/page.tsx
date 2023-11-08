@@ -81,12 +81,7 @@ const ViewNominations = () => {
         isFetched: isNomineeListFetched,
         isFetching: isFetchingNomineeList,
         error: nomineeListErr,
-    } = useRetrieveNomineeList(
-        {},
-        {
-            enabled: nominations?.data != null && nominations.data.length > 0,
-        }
-    );
+    } = useRetrieveNomineeList({}, { refetchOnMount: true });
 
     const { mutateAsync } = useDeleteNomination();
 
